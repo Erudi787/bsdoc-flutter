@@ -108,6 +108,7 @@ class _MyHomePageState extends State<MyHomePage>
             Container(
               height: 100,
               color: Theme.of(context).colorScheme.primary,
+              margin: EdgeInsets.symmetric(horizontal: 16),
             ),
             ListTile(
               title: const Text(
@@ -157,78 +158,122 @@ class _MyHomePageState extends State<MyHomePage>
           _controller.forward();
         }
       },
-      body: Container(
-        decoration: BoxDecoration(
-          color: Color(0XFF16697A),
-        ),
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 20.0,
-                right: 20.0,
-                top: 20.0,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Ailments',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+            Container(
+              decoration: BoxDecoration(color: Color(0xff16697a)),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                  vertical: 20.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Your Personal Guide to Self-Care for Common Ailments',
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Take control of your health charingg',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white70,
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Take control of your health, save time, and find relief at home with BSDOC.',
+                      style: TextStyle(fontSize: 16, color: Colors.white70),
                     ),
-                  ),
-                  const SizedBox(height: 30),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const CurePage(),
+                    const SizedBox(height: 30),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const CurePage(),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.blueGrey[800],
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 40,
+                            vertical: 15,
                           ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.blueGrey[800],
-                        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        child: const Text(
+                          'FIND A CURE YIEEEEE',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
-                      child: const Text(
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
-                        'FIND A CURE YIEIEEE',
-                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-            Expanded(
+
+            Container(
+              color: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 20),
               child: Center(
                 child: Image.asset(
                   'assets/images/logo.png',
+                  height: 200,
                   fit: BoxFit.contain,
-                  height: MediaQuery.of(context).size.height * 0.4,
                 ),
               ),
-            )
+            ),
+
+            Container(
+              color: Color(0xffeef2f7),
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "WHAT WE OFFER",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueAccent,
+                      fontSize: 16,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    "Our Services",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 8),
+                    height: 2,
+                    width: 60,
+                    color: Colors.blueAccent,
+                  ),
+                  Text(
+                    "Comprehensive health tools designed to support your well-being journey with confidence and clarity.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.black87),
+                  ),
+                  
+                ],
+              ),
+            ),
           ],
         ),
       ),
