@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'curepage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -164,7 +165,11 @@ class _MyHomePageState extends State<MyHomePage>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
+              padding: const EdgeInsets.only(
+                left: 20.0,
+                right: 20.0,
+                top: 20.0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -188,7 +193,12 @@ class _MyHomePageState extends State<MyHomePage>
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        //print text
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const CurePage(),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
@@ -206,7 +216,7 @@ class _MyHomePageState extends State<MyHomePage>
                         'FIND A CURE YIEIEEE',
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
