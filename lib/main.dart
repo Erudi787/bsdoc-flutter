@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'curepage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -137,14 +138,16 @@ class _MyHomePageState extends State<MyHomePage>
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
-          color: Colors.blueGrey[500],
-        ),
+        decoration: BoxDecoration(color: Colors.blueGrey[500]),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
+              padding: const EdgeInsets.only(
+                left: 20.0,
+                right: 20.0,
+                top: 20.0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -159,33 +162,36 @@ class _MyHomePageState extends State<MyHomePage>
                   const SizedBox(height: 10),
                   const Text(
                     'text ni blabla',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white70,
-                    ),
+                    style: TextStyle(fontSize: 16, color: Colors.white70),
                   ),
                   const SizedBox(height: 30),
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        //print text
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const CurePage(),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         foregroundColor: Colors.blueGrey,
-                        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 40,
+                          vertical: 15,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      child: const Text(
-                        'FIND A CURE YIEIEEE',
-                      ),
+                      child: const Text('FIND A CURE YIEIEEE'),
                     ),
-                  )
+                  ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

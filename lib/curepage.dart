@@ -15,7 +15,7 @@ class CurePage extends StatelessWidget {
           // Optional: Add a back button
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Navigates back to the previous page
+            Navigator.pop(context);
           },
         ),
       ),
