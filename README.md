@@ -15,7 +15,6 @@ The BSDOC mobile app will provide users with a convenient and accessible way to:
 * **Manage Health Records:** Securely store and access personal health information.
 * **Book Appointments:** Find doctors and schedule appointments.
 * **Personalized Experience:** Access health tips and reminders.
-*
 
 ## 📱 Target Platforms
 
@@ -27,7 +26,6 @@ The BSDOC mobile app will provide users with a convenient and accessible way to:
 * **Framework:** Flutter
 * **Language:** Dart
 * **Backend Integration:** MySQL
-*
 
 ## 🌐 Original Web Application Context
 
@@ -79,6 +77,7 @@ To get a local copy up and running, follow these simple steps.
     ```
 
 ## 📁 Project Structure (Tentative)
+````
 bsdoc-flutter-app/
 ├── android/            # Android specific files
 ├── ios/                # iOS specific files
@@ -97,7 +96,7 @@ bsdoc-flutter-app/
 ├── test/               # Unit and widget tests
 ├── pubspec.yaml        # Project dependencies and metadata
 └── README.md           # This file
-
+````
 ## 📄 License
 
 Distributed under the [] License. See `LICENSE` for more information.
