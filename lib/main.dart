@@ -53,6 +53,100 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+class FeatureCard extends StatelessWidget {
+  final String imagePath;
+  final String title;
+  final String description;
+  final VoidCallback? onLearnMore;
+
+  const FeatureCard({
+    super.key,
+    required this.imagePath,
+    required this.title,
+    required this.description,
+    this.onLearnMore,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black45,
+            spreadRadius: .25,
+            blurRadius: 8, 
+            offset: const Offset(0, 5)
+          ),
+        ],
+        border: Border.all(color: Colors.grey.shade200)
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Image.asset(
+                  imagePath,
+                  width: 40,
+                  height: 40,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Color(0xff043CAA),
+            ),
+          ),
+          const SizedBox(height: 8),
+
+          Text(
+            description,
+            style: const TextStyle(fontSize: 14, color: Colors.black87),
+          ),
+          const SizedBox(height: 12),
+
+          GestureDetector(
+            onTap: onLearnMore,
+            child: Row(
+              children: const [
+                Text(
+                  'Learn more',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff3366ff),
+                  ),
+                ),
+                SizedBox(width: 4),
+                Icon(Icons.arrow_right_alt, color: Color(0xff3366ff)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
@@ -380,7 +474,7 @@ class _MyHomePageState extends State<MyHomePage>
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: Color(0xff043CAA),
                     ),
                   ),
 
@@ -397,246 +491,36 @@ class _MyHomePageState extends State<MyHomePage>
                   ),
 
                   //symptom checker
-                  Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 8,
-                          offset: Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Container(
-                            width: 60,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: Image.asset(
-                                'assets/images/logo.png',
-                                width: 30,
-                                height: 30,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-
-                        // Title
-                        const Text(
-                          'Symptom Checker',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xff043CAA),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-
-                        //description
-                        const Text(
-                          'Input your symptoms to find the right cure, view search results filtered according to your symptoms, and access visual aids with explanations to better understand your condition.',
-                          style: TextStyle(fontSize: 14, color: Colors.black87),
-                        ),
-                        const SizedBox(height: 12),
-
-                        //learn more link
-                        Row(
-                          children: const [
-                            Text(
-                              'Learn more',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xff3366ff),
-                              ),
-                            ),
-                            SizedBox(width: 4),
-                            Icon(
-                              Icons.arrow_right_alt,
-                              color: Color(0xff3366ff),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                  FeatureCard(
+                    imagePath: "assets/images/symptom-checker-icon.png",
+                    title: "Symptom Checker",
+                    description:
+                        "Input your symptoms to find the right cure, view search results filtered according to your symptoms, and access visual aids with explanations to better understand your condition.",
+                    onLearnMore: () {
+                      // function here
+                    },
                   ),
 
                   //personalized health tips
-                  Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 8,
-                          offset: Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Container(
-                            width: 60,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: Image.asset(
-                                'assets/images/logo.png',
-                                width: 30,
-                                height: 30,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-
-                        // Title
-                        const Text(
-                          'Personalized Health Tips',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xff043CAA),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-
-                        //description
-                        const Text(
-                          'Receive personalized health and wellness tips based on your profile and symptom history, save and track your health data over time, and get email or SMS notifications for self-care reminders.',
-                          style: TextStyle(fontSize: 14, color: Colors.black87),
-                        ),
-                        const SizedBox(height: 12),
-
-                        //learn more link
-                        Row(
-                          children: const [
-                            Text(
-                              'Learn more',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xff3366ff),
-                              ),
-                            ),
-                            SizedBox(width: 4),
-                            Icon(
-                              Icons.arrow_right_alt,
-                              color: Color(0xff3366ff),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                  FeatureCard(
+                    imagePath: "assets/images/personal-ht-icon.png",
+                    title: "Personalized Health Tips",
+                    description:
+                        "Receive personalized health and wellness tips based on your profile and symptom history, save and track your health data over time, and get email or SMS notification for self-care reminders.",
+                    onLearnMore: () {
+                      // function here
+                    },
                   ),
 
                   //otc medication guide
-                  Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 8,
-                          offset: Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Container(
-                            width: 60,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: Image.asset(
-                                'assets/images/logo.png',
-                                width: 30,
-                                height: 30,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-
-                        // Title
-                        const Text(
-                          'OTC Medication Guidance',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xff043CAA),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-
-                        //description
-                        const Text(
-                          'Find the right over-the-counter medications based on your symptoms, access detailed information on their uses, dosages, and precautions, and stay informed about potential drug interactions and contraindications.',
-                          style: TextStyle(fontSize: 14, color: Colors.black87),
-                        ),
-                        const SizedBox(height: 12),
-
-                        //learn more link
-                        Row(
-                          children: const [
-                            Text(
-                              'Learn more',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xff3366ff),
-                              ),
-                            ),
-                            SizedBox(width: 4),
-                            Icon(
-                              Icons.arrow_right_alt,
-                              color: Color(0xff3366ff),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                  FeatureCard(
+                    imagePath: "assets/images/otc-guide-icon.png",
+                    title: "OTC Medication Guidance",
+                    description:
+                        "Find the right over-the-counter medications based on your symptoms, access detailed information on their uses, dosages, and precautions, and stay informed about potential drug interactions and contraindications.",
+                    onLearnMore: () {
+                      // function diri
+                    },
                   ),
                 ],
               ),
