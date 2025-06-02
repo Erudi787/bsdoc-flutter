@@ -148,6 +148,54 @@ class _MyHomePageState extends State<MyHomePage>
     );
   }
 
+  Widget _helpsAdvantageCard({
+    required IconData icon,
+    required Color iconBgColor,
+    required Color iconColor,
+    required String title,
+    required String description,
+  }) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+      decoration: BoxDecoration(color: Colors.transparent),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            width: 70,
+            height: 70,
+            decoration: BoxDecoration(
+              color: iconBgColor,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: iconColor, size: 35),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            description,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 15,
+              color: const Color.fromARGB(255, 85, 85, 85),
+              height: 1.4,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -732,65 +780,97 @@ class _MyHomePageState extends State<MyHomePage>
                       ],
                     ),
                   ),
-                  SizedBox(height: 20),
-
-                  Container(
-                    color: Color(0xffeef2f7),
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 40,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          "STEP BY STEP",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blueAccent,
-                            fontSize: 16,
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          "How BSDOC Helps You",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xff0033aa),
-                          ),
-                        ),
-
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 8),
-                          height: 2,
-                          width: 60,
-                          color: Colors.blueAccent,
-                        ),
-                      ],
-                    ),
-                  ),
                 ],
               ),
             ),
-            _buildAdvantageCard(
-                    icon: Icons.edit_outlined, // Pencil/edit icon
-                    iconBackgroundColor: Color(0xFFE3F2FD), // Light blue
-                    iconColor: Color(0xFF2196F3),       // Blue
+            SizedBox(height: 20),
+
+            Container(
+              color: Color(0xffeef2f7),
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "STEP BY STEP",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueAccent,
+                      fontSize: 16,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    "How BSDOC Helps You",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff0033aa),
+                    ),
+                  ),
+
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 8),
+                    height: 2,
+                    width: 60,
+                    color: Colors.blueAccent,
+                  ),
+                  _helpsAdvantageCard(
+                    icon: Icons.edit_square, // Pencil/edit icon
+                    iconBgColor: Color(0xFFc0d9ff), // Light blue
+                    iconColor: Color(0xFF215aF3), // Blue
                     title: "Describe Your Symptoms",
                     description:
                         "Use our intuitive interface to input the symptoms you are experiencing.",
                   ),
-                  SizedBox(height: 20), // Space between cards
-                  _buildAdvantageCard(
-                    icon: Icons.article_outlined, // Document icon
-                    iconBackgroundColor: Color(0xFFE8F5E9), // Light green
-                    iconColor: Color(0xFF4CAF50),       // Green
+                  _helpsAdvantageCard(
+                    icon: Icons.sticky_note_2,
+                    iconBgColor: Color(0xFFd3ffdf),
+                    iconColor: Color(0xFF00d43a),
                     title: "Get Guided Information",
                     description:
-                        "Receive potential causes, detailed self-care advice, and OTC medication guidance.",
+                        "Receive potential causes, detailed self-care advices, and OTC medication guidance.",
                   ),
+                  _helpsAdvantageCard(
+                    icon: Icons.security,
+                    iconBgColor: Color(0xFFf8dfff),
+                    iconColor: Color(0xFFb300e7),
+                    title: "Find Relief Safely",
+                    description:
+                        "Follow personalized tips and instructions to manage your condition effectively at home.",
+                  ),
+                  SizedBox(height: 10),
+                  Center(
+                    child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF0033aa),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 14,
+                        ),
+                      ),
+                      onPressed: () {
+                        // Handle navigation or action
+                      },
+                      icon: const Icon(
+                        Icons.arrow_forward,
+                        size: 18,
+                        color: Colors.white,
+                      ),
+                      label: const Text(
+                        'Get Started Now',
+                        style: TextStyle(fontSize: 14, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 40),
+                ],
+              ),
+            ),
           ],
         ),
       ),
