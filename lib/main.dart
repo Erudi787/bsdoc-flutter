@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'curepage.dart';
+import 'package:bsdoc_flutter/footer.dart';
 
 void main() {
   runApp(const MyApp());
@@ -79,11 +80,11 @@ class FeatureCard extends StatelessWidget {
           BoxShadow(
             color: Colors.black45,
             spreadRadius: .25,
-            blurRadius: 8, 
-            offset: const Offset(0, 5)
+            blurRadius: 8,
+            offset: const Offset(0, 5),
           ),
         ],
-        border: Border.all(color: Colors.grey.shade200)
+        border: Border.all(color: Colors.grey.shade200),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -755,6 +756,7 @@ class _MyHomePageState extends State<MyHomePage>
                 ],
               ),
             ),
+            const AppFooter(),
           ],
         ),
       ),
