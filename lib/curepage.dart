@@ -144,20 +144,15 @@ class _CurePageState extends State<CurePage> {
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     hintText: 'Enter symptoms, conditions, etc.',
-                    // FIX: Replaced withOpacity with withAlpha
                     hintStyle: TextStyle(
                       color: Colors.white.withAlpha((255 * 0.7).round()),
                     ), // Line ~162
                     labelText: 'Search your current Symptoms',
-                    // FIX: Replaced withOpacity with withAlpha
                     labelStyle: TextStyle(
                       color: Colors.white.withAlpha((255 * 0.9).round()),
                     ), // Line ~164
                     filled: true,
-                    // FIX: Replaced withOpacity with withAlpha
-                    fillColor: Colors.white.withAlpha(
-                      (255 * 0.1).round(),
-                    ), // Line ~166
+                    fillColor: Colors.white.withAlpha((255 * 0.1).round()),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
                       borderSide: BorderSide.none,
@@ -171,13 +166,11 @@ class _CurePageState extends State<CurePage> {
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
-                      // FIX: Replaced withOpacity with withAlpha
                       borderSide: BorderSide(
                         color: Colors.white.withAlpha((255 * 0.3).round()),
                         width: 1.0,
-                      ), // Line ~184
+                      ),
                     ),
-                    // FIX: Replaced withOpacity with withAlpha
                     prefixIcon: Icon(
                       Icons.search,
                       color: Colors.white.withAlpha((255 * 0.7).round()),
