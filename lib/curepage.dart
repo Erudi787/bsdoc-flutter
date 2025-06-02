@@ -9,9 +9,9 @@ class CurePage extends StatefulWidget {
   const CurePage({
     super.key,
     this.gradientColors = const [
-      Color(0xFF014478),
-      Color(0xFF018ABE),
-      Color(0xFF93CBD8),
+      Color(0xFF014478), // Dark Blue
+      Color(0xFF018ABE), // Medium Blue
+      Color(0xFF93CBD8), // Light Blue
     ],
     this.beginAlignment = Alignment.topCenter,
     this.endAlignment = Alignment.bottomCenter,
@@ -23,8 +23,20 @@ class CurePage extends StatefulWidget {
 }
 
 class _CurePageState extends State<CurePage> {
-  // 1. Add a state variable for your new inline switch
   bool _isInlineSwitchOn = false;
+  late TextEditingController _searchController;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +88,7 @@ class _CurePageState extends State<CurePage> {
         constraints: const BoxConstraints.expand(),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -100,20 +112,16 @@ class _CurePageState extends State<CurePage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
-                // 2. Modify this Row: "Advanced Search" text and the new Switch
+                const SizedBox(height: 20),
                 Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.center, // Center the content of the row
-                  crossAxisAlignment:
-                      CrossAxisAlignment.center, // Align items vertically
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Text(
                       'Advanced Search',
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
-                    const SizedBox(width: 10), // Space between text and switch
-                    // 3. Add the Switch here
+                    const SizedBox(width: 10),
                     Switch.adaptive(
                       value: _isInlineSwitchOn,
                       onChanged: (bool newValue) {
@@ -121,22 +129,63 @@ class _CurePageState extends State<CurePage> {
                           _isInlineSwitchOn = newValue;
                         });
                       },
-                      activeColor:
-                          Colors.lightBlueAccent, // Or any color you prefer
-                      // inactiveTrackColor: Colors.grey.withOpacity(0.5), // For Material switch
+                      activeColor: Colors.lightBlueAccent,
+                      inactiveThumbColor: Colors.white70,
+                      // FIX: Replaced withOpacity with withAlpha
+                      inactiveTrackColor: Colors.white.withAlpha(
+                        (255 * 0.3).round(),
+                      ), // Line ~147
                     ),
                   ],
                 ),
-                const SizedBox(height: 30),
-                // Your TextField or other UI elements can go here
-                // Example:
-                // TextField(
-                //   decoration: InputDecoration(
-                //     hintText: 'Enter search term...',
-                //     hintStyle: TextStyle(color: Colors.white70),
-                //     // ... more styling
-                //   ),
-                // ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: _searchController,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    hintText: 'Enter symptoms, conditions, etc.',
+                    // FIX: Replaced withOpacity with withAlpha
+                    hintStyle: TextStyle(
+                      color: Colors.white.withAlpha((255 * 0.7).round()),
+                    ), // Line ~162
+                    labelText: 'Search your current Symptoms',
+                    // FIX: Replaced withOpacity with withAlpha
+                    labelStyle: TextStyle(
+                      color: Colors.white.withAlpha((255 * 0.9).round()),
+                    ), // Line ~164
+                    filled: true,
+                    // FIX: Replaced withOpacity with withAlpha
+                    fillColor: Colors.white.withAlpha(
+                      (255 * 0.1).round(),
+                    ), // Line ~166
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: const BorderSide(
+                        color: Colors.lightBlueAccent,
+                        width: 1.5,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      // FIX: Replaced withOpacity with withAlpha
+                      borderSide: BorderSide(
+                        color: Colors.white.withAlpha((255 * 0.3).round()),
+                        width: 1.0,
+                      ), // Line ~184
+                    ),
+                    // FIX: Replaced withOpacity with withAlpha
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.white.withAlpha((255 * 0.7).round()),
+                    ), // Line ~190
+                  ),
+                  onChanged: (text) {},
+                  onSubmitted: (text) {},
+                ),
                 const Spacer(),
               ],
             ),
@@ -151,15 +200,21 @@ class _CurePageState extends State<CurePage> {
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.home, color: bottomNavBarContentColor),
-              onPressed: () {},
+              onPressed: () {
+                /* TODO: Implement action */
+              }, // Line ~217
             ),
             IconButton(
               icon: Icon(Icons.search, color: bottomNavBarContentColor),
-              onPressed: () {},
+              onPressed: () {
+                /* TODO: Implement action */
+              }, // Line ~223
             ),
             IconButton(
               icon: Icon(Icons.person, color: bottomNavBarContentColor),
-              onPressed: () {},
+              onPressed: () {
+                /* TODO: Implement action */
+              }, // Line ~229
             ),
           ],
         ),
