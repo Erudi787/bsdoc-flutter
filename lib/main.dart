@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'curepage.dart';
 import 'package:bsdoc_flutter/footer.dart';
+import 'hoverText.dart';
+import 'login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -125,22 +127,16 @@ class FeatureCard extends StatelessWidget {
           ),
           const SizedBox(height: 12),
 
-          GestureDetector(
+          HoverText(
+            text: 'Learn more',
             onTap: onLearnMore,
-            child: Row(
-              children: const [
-                Text(
-                  'Learn more',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff3366ff),
-                  ),
-                ),
-                SizedBox(width: 4),
-                Icon(Icons.arrow_right_alt, color: Color(0xff3366ff)),
-              ],
+            textStyle: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Color(0xff3366ff),
             ),
+            suffixIcon: Icon(Icons.arrow_right_alt, color: Color(0xff3366ff)),
+            iconSpacing: 4,
           ),
         ],
       ),
@@ -365,6 +361,10 @@ class _MyHomePageState extends State<MyHomePage>
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
               ),
               onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Login()),
+                );
                 _toggleDrawer();
               },
             ),
@@ -407,32 +407,35 @@ class _MyHomePageState extends State<MyHomePage>
                     ),
                     const SizedBox(height: 30),
                     Center(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const CurePage(),
+                      child: FractionallySizedBox(
+                        widthFactor: 1,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const CurePage(),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.blueGrey[800],
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 40,
+                              vertical: 15,
                             ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.blueGrey[800],
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
-                            vertical: 15,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                        child: const Text(
-                          'FIND A CURE YIEEEEE',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                          child: const Text(
+                            'FIND A CURE',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
@@ -498,7 +501,12 @@ class _MyHomePageState extends State<MyHomePage>
                     description:
                         "Input your symptoms to find the right cure, view search results filtered according to your symptoms, and access visual aids with explanations to better understand your condition.",
                     onLearnMore: () {
-                      // function here
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CurePage(),
+                        ),
+                      );
                     },
                   ),
 
@@ -509,7 +517,12 @@ class _MyHomePageState extends State<MyHomePage>
                     description:
                         "Receive personalized health and wellness tips based on your profile and symptom history, save and track your health data over time, and get email or SMS notification for self-care reminders.",
                     onLearnMore: () {
-                      // function here
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CurePage(),
+                        ),
+                      );
                     },
                   ),
 
@@ -520,7 +533,12 @@ class _MyHomePageState extends State<MyHomePage>
                     description:
                         "Find the right over-the-counter medications based on your symptoms, access detailed information on their uses, dosages, and precautions, and stay informed about potential drug interactions and contraindications.",
                     onLearnMore: () {
-                      // function diri
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CurePage(),
+                        ),
+                      );
                     },
                   ),
                 ],
@@ -646,7 +664,12 @@ class _MyHomePageState extends State<MyHomePage>
                               ),
                             ),
                             onPressed: () {
-                              // Handle navigation or action
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const Login(),
+                                ),
+                              );
                             },
                             icon: const Icon(
                               Icons.arrow_forward,
