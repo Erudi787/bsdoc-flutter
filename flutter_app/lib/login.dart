@@ -1,4 +1,4 @@
-import 'package:bsdoc_flutter/hoverText.dart';
+import 'package:bsdoc_flutter/hover_text.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -382,6 +382,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             fontWeight: FontWeight.normal,
             color: Colors.black,
           ),
+          suffixIcon: Icon(Icons.arrow_right_alt, color: Colors.black),
           iconSpacing: 4,
         ),
       ],

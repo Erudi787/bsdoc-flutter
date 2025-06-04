@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'curepage.dart';
 import 'package:bsdoc_flutter/footer.dart';
-import 'hoverText.dart';
+import 'hover_text.dart';
 import 'login.dart';
 
 void main() {
