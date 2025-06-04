@@ -410,11 +410,12 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
           ),
           leading: IconButton(
             onPressed: () {
-              if (!_showLogin) {
-                _toggleView();
-              } else {
-                Navigator.pop(context);
-              }
+              // if (!_showLogin) {
+              //   _toggleView();
+              // } else {
+              //   Navigator.pop(context);
+              // }
+              Navigator.pop(context); //diritso ra exit sa page regardless of unsa ang active form
             },
             icon: const Icon(Icons.arrow_back),
           ),
