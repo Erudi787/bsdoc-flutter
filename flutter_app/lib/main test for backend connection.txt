@@ -1,0 +1,94 @@
+// flutter_app/lib/main.dart (Example of using the service)
+import 'package:flutter/material.dart';
+import 'package:bsdoc_flutter/services/user_services.dart'; // Adjust path if needed
+import 'package:bsdoc_flutter/models/user.dart'; // Adjust path if needed
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Health App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const UserListPage(),
+    );
+  }
+}
+
+class UserListPage extends StatefulWidget {
+  const UserListPage({super.key});
+
+  @override
+  State<UserListPage> createState() => _UserListPageState();
+}
+
+class _UserListPageState extends State<UserListPage> {
+  final UserService _userService = UserService();
+  List<User> _users = [];
+  bool _isLoading = true;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUsers();
+  }
+
+  Future<void> _fetchUsers() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+    try {
+      final users = await _userService.getUsers();
+      setState(() {
+        _users = users;
+      });
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Users from Backend'),
+      ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _error != null
+              ? Center(child: Text('Error: $_error'))
+              : _users.isEmpty
+                  ? const Center(child: Text('No users found.'))
+                  : ListView.builder(
+                      itemCount: _users.length,
+                      itemBuilder: (context, index) {
+                        final user = _users[index];
+                        return ListTile(
+                          title: Text(user.username),
+                          subtitle: Text(user.email),
+                          leading: Text(user.id.toString()),
+                        );
+                      },
+                    ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _fetchUsers,
+        child: const Icon(Icons.refresh),
+      ),
+    );
+  }
+}
