@@ -110,3 +110,4 @@ build/                # Python build output (can overlap with general /build/)
 # VS Code which you may wish to be included in version control, so this line
 # is commented out by default.
 #.vscode/
+.gitignore
