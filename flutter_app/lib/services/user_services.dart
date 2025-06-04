@@ -1,5 +1,6 @@
 // flutter_app/lib/services/user_service.dart
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:bsdoc_flutter/models/user.dart';
 
@@ -22,13 +23,13 @@ class UserService {
         return usersJson.map((json) => User.fromJson(json)).toList();
       } else {
         // Handle server errors
-        print('Failed to load users: ${response.statusCode}');
-        print('Response body: ${response.body}');
+        ('Failed to load users: ${response.statusCode}');
+        debugPrint('Response body: ${response.body}');
         throw Exception('Failed to load users');
       }
     } catch (e) {
       // Handle network or parsing errors
-      print('Error fetching users: $e');
+      debugPrint('Error fetching users: $e');
       throw Exception('Failed to connect to the server or parse data');
     }
   }
