@@ -4,7 +4,7 @@
             "outputFile": "com.example.bsdoc_flutter.app-mergeDebugResources-25:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "C:\\flutter_projects\\bsdoc_flutter\\flutter_app\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "C:\\Users\\Lavilia\\Documents\\GitHub\\bsdoc-flutter\\flutter_app\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
