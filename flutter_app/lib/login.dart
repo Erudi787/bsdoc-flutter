@@ -1,4 +1,5 @@
 import 'package:bsdoc_flutter/hover_text.dart';
+import 'package:bsdoc_flutter/services/auth_services.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -21,6 +22,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
 
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
+
+  final AuthService _authService = AuthService();
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -63,6 +67,105 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
       });
       _fadeController.forward();
     });
+  }
+
+  void _handleLogin() async {
+    if (_isLoading) return;
+    setState(() => _isLoading = true);
+
+    try {
+      final accessToken = await _authService.login(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Login Successful!"),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+
+      // TODO: save access_token and return to main
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Invalid email or password. Please try again.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      debugPrint(
+        'Login Failed: ${e.toString().replaceFirst("Exception: ", "")}',
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  void _handleSignup() async {
+    if (_isLoading) return;
+
+    List<String> errors = [];
+
+    if (_registerEmailController.text.trim().isEmpty) {
+      errors.add('Email cannot be empty');
+    }
+    if (_registerPasswordController.text.trim().isEmpty) {
+      errors.add('Password cannot be empty!');
+    }
+    if (_registerConfirmPasswordController.text.trim().isEmpty) {
+      errors.add('Please confirm your password!');
+    }
+    if (_registerPasswordController.text.trim() != _registerConfirmPasswordController.text.trim()) {
+      errors.add('Passwords do not match!');
+    }
+
+    if (errors.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errors.first), backgroundColor: Colors.red),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      final message = await _authService.signup(
+        email: _registerEmailController.text.trim(),
+        password: _registerPasswordController.text.trim(),
+      );
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      }
+      setState(() => _isLoading = true);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.toString().replaceFirst("Exception: ", "")),
+            backgroundColor: Colors.red,
+          ),
+        );
+        debugPrint(e.toString().replaceFirst("Exception: ", ""));
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
   }
 
   Widget _buildLoginForm(BuildContext context) {
@@ -159,9 +262,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
         FractionallySizedBox(
           widthFactor: 1,
           child: ElevatedButton(
-            onPressed: () {
-              // add function diri
-            },
+            onPressed: _isLoading ? null : _handleLogin,
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color.fromARGB(255, 59, 209, 194),
               foregroundColor: Colors.black,
@@ -170,14 +271,23 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 borderRadius: BorderRadiusGeometry.circular(20),
               ),
             ),
-            child: const Text(
-              'Login',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
+            child: _isLoading && _showLogin
+                ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 3,
+                    ),
+                  )
+                : const Text(
+                    'Login',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
           ),
         ),
         SizedBox(height: 20),
@@ -348,9 +458,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
         FractionallySizedBox(
           widthFactor: 1,
           child: ElevatedButton(
-            onPressed: () {
-              // add function diri
-            },
+            onPressed: _isLoading ? null : _handleSignup,
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color.fromARGB(255, 59, 209, 194),
               foregroundColor: Colors.black,
@@ -359,14 +467,23 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 borderRadius: BorderRadiusGeometry.circular(20),
               ),
             ),
-            child: const Text(
-              'Register',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
+            child: _isLoading && !_showLogin
+                ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 3,
+                    ),
+                  )
+                : const Text(
+                    'Register',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
           ),
         ),
         SizedBox(height: 20),
@@ -415,7 +532,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               // } else {
               //   Navigator.pop(context);
               // }
-              Navigator.pop(context); //diritso ra exit sa page regardless of unsa ang active form
+              Navigator.pop(
+                context,
+              ); //diritso ra exit sa page regardless of unsa ang active form
             },
             icon: const Icon(Icons.arrow_back),
           ),
