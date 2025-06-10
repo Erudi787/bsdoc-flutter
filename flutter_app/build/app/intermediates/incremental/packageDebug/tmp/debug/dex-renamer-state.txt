@@ -1,9 +1,9 @@
-#Sun Jun 08 21:28:01 CST 2025
-base.0=C\:\\flutter_projects\\bsdoc_flutter\\flutter_app\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
-base.1=C\:\\flutter_projects\\bsdoc_flutter\\flutter_app\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
-base.2=C\:\\flutter_projects\\bsdoc_flutter\\flutter_app\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
-base.3=C\:\\flutter_projects\\bsdoc_flutter\\flutter_app\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\1\\classes.dex
-base.4=C\:\\flutter_projects\\bsdoc_flutter\\flutter_app\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\3\\classes.dex
+#Tue Jun 10 11:27:12 PST 2025
+base.0=C\:\\Users\\Lavilia\\Documents\\GitHub\\bsdoc-flutter\\flutter_app\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
+base.1=C\:\\Users\\Lavilia\\Documents\\GitHub\\bsdoc-flutter\\flutter_app\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
+base.2=C\:\\Users\\Lavilia\\Documents\\GitHub\\bsdoc-flutter\\flutter_app\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+base.3=C\:\\Users\\Lavilia\\Documents\\GitHub\\bsdoc-flutter\\flutter_app\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\1\\classes.dex
+base.4=C\:\\Users\\Lavilia\\Documents\\GitHub\\bsdoc-flutter\\flutter_app\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\3\\classes.dex
 path.0=classes.dex
 path.1=0/classes.dex
 path.2=0/classes.dex
