@@ -1,6 +1,7 @@
 import 'package:bsdoc_flutter/hover_text.dart';
 import 'package:bsdoc_flutter/services/auth_services.dart';
 import 'package:flutter/material.dart';
+import 'package:bsdoc_flutter/components/bottomnavbar.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -122,7 +123,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     if (_registerConfirmPasswordController.text.trim().isEmpty) {
       errors.add('Please confirm your password!');
     }
-    if (_registerPasswordController.text.trim() != _registerConfirmPasswordController.text.trim()) {
+    if (_registerPasswordController.text.trim() !=
+        _registerConfirmPasswordController.text.trim()) {
       errors.add('Passwords do not match!');
     }
 
@@ -689,6 +691,14 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                           ),
                         ),
                       ),
+                    ),
+                    Positioned(
+                      left: 12,
+                      right: 12,
+                      bottom: 15 + MediaQuery.of(context).padding.bottom,
+                      child: const GlobalBottomNav(
+                        currentIndex: 3,
+                      ), // Pass index 2 for the "Medicine" tab
                     ),
                   ],
                 ),
