@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:bsdoc_flutter/constants/api.dart';
 
 class AuthService {
   // Use 10.0.2.2 for the Android emulator to connect to your local machine's localhost.
   // For iOS emulator, you can use 'localhost' or '127.0.0.1'.
   // For a physical device, use your computer's network IP address.
-  final String _baseUrl = "http://10.0.2.2:8000";
+  final String _baseUrl = baseUrl;
 
   Future<String> signup({
     required String email,
