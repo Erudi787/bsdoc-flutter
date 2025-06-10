@@ -1,8 +1,53 @@
+// File: main.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:bsdoc_flutter/components/bottomnavbar.dart'; // Using your previous correct structure
+
 import 'curepage.dart';
-import 'package:bsdoc_flutter/footer.dart';
-import 'hover_text.dart';
 import 'login.dart';
+
+// Your TabPage and _buildTabContent classes remain the same...
+class TabPage extends StatelessWidget {
+  final String titleForAppBar;
+  final Widget pageContent;
+  final List<Color> gradientColors;
+  final AlignmentGeometry beginAlignment;
+  final AlignmentGeometry endAlignment;
+  final List<double>? stops;
+  final Color mainAppBarTextColor;
+
+  const TabPage({
+    super.key,
+    required this.titleForAppBar,
+    required this.pageContent,
+    required this.gradientColors,
+    required this.beginAlignment,
+    required this.endAlignment,
+    this.stops,
+    required this.mainAppBarTextColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return pageContent;
+  }
+}
+
+Widget _buildTabContent(String title, {Color textColor = Colors.white70}) =>
+    Center(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Text(
+          "$title Area",
+          style: TextStyle(
+            color: textColor,
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
 
 void main() {
   runApp(const MyApp());
@@ -11,676 +56,148 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    const List<Color> gradientColors = [
+      Color(0xFF44A2E6),
+      Color(0xFFABCFF3),
+      Color(0xFFBBA8DF),
+    ];
+
     return MaterialApp(
       title: 'BSDOC App',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF82c0cc)),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(),
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/home',
+      routes: {
+        '/home': (context) => const MyHomePage(gradientColors: gradientColors),
+        '/medicine': (context) =>
+            const CurePage(gradientColors: gradientColors),
+        '/profile': (context) => Login(),
+        // Define other routes here
+      },
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+  final List<Color> gradientColors;
+  const MyHomePage({super.key, required this.gradientColors});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class FeatureCard extends StatelessWidget {
-  final String imagePath;
-  final String title;
-  final String description;
-  final VoidCallback? onLearnMore;
-
-  const FeatureCard({
-    super.key,
-    required this.imagePath,
-    required this.title,
-    required this.description,
-    this.onLearnMore,
-  });
-
+class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black45,
-            spreadRadius: .25,
-            blurRadius: 8,
-            offset: const Offset(0, 5),
-          ),
-        ],
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-            child: Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                shape: BoxShape.circle,
-              ),
-              child: Center(
-                child: Image.asset(
-                  imagePath,
-                  width: 40,
-                  height: 40,
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
+    Color appBarTextColor = widget.gradientColors.first.computeLuminance() < 0.5
+        ? Colors.white
+        : Colors.black;
 
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Color(0xff043CAA),
-            ),
-          ),
-          const SizedBox(height: 8),
+    final double bottomNavBarHeight = 60.0;
+    final double bottomNavBarOffset = 15.0;
 
-          Text(
-            description,
-            style: const TextStyle(fontSize: 14, color: Colors.black87),
-          ),
-          const SizedBox(height: 12),
-
-          HoverText(
-            text: 'Learn more',
-            onTap: onLearnMore,
-            textStyle: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Color(0xff3366ff),
-            ),
-            suffixIcon: Icon(Icons.arrow_right_alt, color: Color(0xff3366ff)),
-            iconSpacing: 4,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _MyHomePageState extends State<MyHomePage>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  void _toggleDrawer() {
-    if (_scaffoldkey.currentState!.isDrawerOpen) {
-      _scaffoldkey.currentState!.closeDrawer();
-      _controller.reverse();
-    } else {
-      _scaffoldkey.currentState!.openDrawer();
-      _controller.forward();
-    }
-  }
-
-  Widget _buildAdvantageCard({
-    required IconData icon,
-    required Color iconBackgroundColor,
-    required Color iconColor,
-    required String title,
-    required String description,
-  }) {
-    return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 20,
-      ), // Added more vertical margin
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15.0),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0xcd043caa),
-            spreadRadius: .25,
-            blurRadius: 5,
-            offset: const Offset(0, 5),
-          ),
-        ],
-        border: Border.all(
-          color: Colors.grey.shade200,
-        ), // Optional: if you want a very subtle border
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 70,
-            height: 70,
-            decoration: BoxDecoration(
-              color: iconBackgroundColor,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, color: iconColor, size: 35),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Color(0xff043CAA), // Dark blue color for title
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            description,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 15,
-              color: Colors.black54, // Slightly lighter for description
-              height: 1.4,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _helpsAdvantageCard({
-    required IconData icon,
-    required Color iconBgColor,
-    required Color iconColor,
-    required String title,
-    required String description,
-  }) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
-      decoration: BoxDecoration(color: Colors.transparent),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 70,
-            height: 70,
-            decoration: BoxDecoration(
-              color: iconBgColor,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, color: iconColor, size: 35),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            description,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 15,
-              color: const Color.fromARGB(255, 85, 85, 85),
-              height: 1.4,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldkey,
+      extendBodyBehindAppBar: true,
+      extendBody: true,
       appBar: AppBar(
-        backgroundColor: Color(0xDD000000),
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: AnimatedIcon(
-            icon: AnimatedIcons.menu_close,
-            progress: _controller,
-            color: Colors.white,
+        title: SvgPicture.asset('assets/images/logonew.svg', height: 40),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Icon(
+                Icons.notifications_none,
+                color: appBarTextColor,
+                size: 28,
+              ),
+            ),
+            onPressed: () {
+              // TODO: Handle notifications
+              print("Notifications tapped");
+            },
           ),
-          onPressed: _toggleDrawer,
-        ),
-        title: const Text(''),
-        // actions: [
-        //   IconButton(
-        //     onPressed: () {
-        //       // function here
-        //     },
-        //     icon: Icon(Icons.notifications_none, color: Colors.white),
-        //   ),
-        //   Padding(
-        //     padding: const EdgeInsets.only(right: 16.0),
-        //     child: Icon(Icons.person, color: Colors.grey[700]),
-        //   ),
-        // ],
+        ],
       ),
-      drawer: Drawer(
-        backgroundColor: Colors.white,
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            Container(
-              height: 100,
-              color: Theme.of(context).colorScheme.primary,
-              margin: EdgeInsets.symmetric(horizontal: 16),
-            ),
-            ListTile(
-              title: const Text(
-                'Home',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
-              ),
-              onTap: () {
-                _toggleDrawer();
-                //print shi
-              },
-            ),
-            ListTile(
-              title: const Text(
-                'Doctors',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
-              ),
-              onTap: () {
-                _toggleDrawer();
-                //print('Navigating to blabla');
-              },
-            ),
-            ListTile(
-              title: const Text(
-                'Schedule Appointment',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
-              ),
-              onTap: () {
-                _toggleDrawer();
-              },
-            ),
-            ListTile(
-              title: const Text(
-                'Sign In',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Login()),
-                );
-                _toggleDrawer();
-              },
-            ),
-          ],
-        ),
-      ),
-      onDrawerChanged: (isOpened) {
-        if (!isOpened) {
-          _controller.reverse();
-        } else {
-          _controller.forward();
-        }
-      },
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              decoration: BoxDecoration(color: Color(0xff16697a)),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                  vertical: 20.0,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Your Personal Guide to Self-Care for Common Ailments',
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Take control of your health, save time, and find relief at home with BSDOC.',
-                      style: TextStyle(fontSize: 16, color: Colors.white70),
-                    ),
-                    const SizedBox(height: 30),
-                    Center(
-                      child: FractionallySizedBox(
-                        widthFactor: 1,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const CurePage(),
-                              ),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.blueGrey[800],
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 40,
-                              vertical: 15,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                          child: const Text(
-                            'FIND A CURE',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: widget.gradientColors,
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               ),
             ),
-
-            Container(
-              color: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Center(
-                child: Image.asset(
-                  'assets/images/logo.png',
-                  height: 200,
-                  fit: BoxFit.contain,
-                ),
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(
+                top: kToolbarHeight + MediaQuery.of(context).padding.top,
+                bottom:
+                    bottomNavBarHeight +
+                    bottomNavBarOffset +
+                    MediaQuery.of(context).padding.bottom +
+                    20,
               ),
-            ),
-
-            Container(
-              color: Color(0xffeef2f7),
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    "WHAT WE OFFER",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueAccent,
-                      fontSize: 16,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    "Our Services",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xff043CAA),
-                    ),
-                  ),
-
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    height: 2,
-                    width: 60,
-                    color: Colors.blueAccent,
-                  ),
-                  Text(
-                    "Comprehensive health tools designed to support your well-being journey with confidence and clarity.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.black87),
-                  ),
-
-                  //symptom checker
-                  FeatureCard(
-                    imagePath: "assets/images/symptom-checker-icon.png",
-                    title: "Symptom Checker",
-                    description:
-                        "Input your symptoms to find the right cure, view search results filtered according to your symptoms, and access visual aids with explanations to better understand your condition.",
-                    onLearnMore: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const CurePage(),
-                        ),
-                      );
-                    },
-                  ),
-
-                  //personalized health tips
-                  FeatureCard(
-                    imagePath: "assets/images/personal-ht-icon.png",
-                    title: "Personalized Health Tips",
-                    description:
-                        "Receive personalized health and wellness tips based on your profile and symptom history, save and track your health data over time, and get email or SMS notification for self-care reminders.",
-                    onLearnMore: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const CurePage(),
-                        ),
-                      );
-                    },
-                  ),
-
-                  //otc medication guide
-                  FeatureCard(
-                    imagePath: "assets/images/otc-guide-icon.png",
-                    title: "OTC Medication Guidance",
-                    description:
-                        "Find the right over-the-counter medications based on your symptoms, access detailed information on their uses, dosages, and precautions, and stay informed about potential drug interactions and contraindications.",
-                    onLearnMore: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const CurePage(),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-
-            // advantages section
-            Container(
-              color: Color(0xffffffff),
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'ADVANTAGES',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueAccent[700],
-                      fontSize: 16,
-                      letterSpacing: 0.5,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Why Choose BSDOC?',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xff043caa),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 12),
-                    height: 3,
-                    width: 70,
-                    color: Colors.blueAccent[700],
-                  ),
-                  Text(
-                    'Experience a new approach to managing your health with our comprehensive self-care platform.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.black87,
-                      fontSize: 16,
-                      height: 1.5,
-                    ),
-                  ),
-                  SizedBox(height: 30),
-
-                  _buildAdvantageCard(
-                    icon: Icons.access_time,
-                    iconBackgroundColor: Color(0xffe3f2fd),
-                    iconColor: Color(0xff1e88e5),
-                    title: 'Save Time & Effort',
-                    description:
-                        'Get immediate self-care guidance without waiting for appointments for common issues.',
-                  ),
-
-                  _buildAdvantageCard(
-                    icon: Icons.lightbulb,
-                    iconBackgroundColor: Color(0xffe3f2fd),
-                    iconColor: Color(0xff1e88e5),
-                    title: 'Informed Decisions',
-                    description:
-                        'Understand your symptoms and learn about appropriate OTC options.',
-                  ),
-
-                  _buildAdvantageCard(
-                    icon: Icons.person,
-                    iconBackgroundColor: Color(0xffe3f2fd),
-                    iconColor: Color(0xff1e88e5),
-                    title: 'Personalized Care',
-                    description:
-                        'Receive tips and reminders tailored to your health profile.',
-                  ),
-
-                  _buildAdvantageCard(
-                    icon: Icons.menu_book_sharp,
-                    iconBackgroundColor: Color(0xffe3f2fd),
-                    iconColor: Color(0xff1e88e5),
-                    title: 'Accessible Knowledge',
-                    description:
-                        'Empower yourself with reliable health information anytime, anywhere.',
-                  ),
-
-                  Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 40,
-                    ),
-                    padding: const EdgeInsets.all(30),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFE6F0FF), // Light blue background
-                      borderRadius: BorderRadius.circular(20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0,
+                      vertical: 20.0,
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const Text(
-                          'Ready to take control of your health?',
+                          'Your Personal Guide to Self-Care for Common Ailments',
+                          textAlign: TextAlign.center,
                           style: TextStyle(
+                            fontSize: 32,
                             fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Color(0xFF0033AA),
+                            color: Colors.white,
+                            height: 1.2,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 12),
                         const Text(
-                          'Join thousands who are already using BSDOC to make better health decisions.',
-                          style: TextStyle(color: Colors.black87, fontSize: 14),
+                          'Take control of your health, save time, and find relief at home with BSDOC.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white70,
+                            height: 1.4,
+                          ),
                         ),
-                        const SizedBox(height: 50),
-                        Center(
+                        const SizedBox(height: 30),
+                        FractionallySizedBox(
+                          widthFactor: 0.8,
                           child: ElevatedButton.icon(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFF0033aa),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                                vertical: 14,
-                              ),
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const Login(),
-                                ),
-                              );
-                            },
                             icon: const Icon(
-                              Icons.arrow_forward,
-                              size: 18,
-                              color: Colors.white,
+                              Icons.medication_liquid_outlined,
+                              color: Color(0xFF014478),
                             ),
-                            label: const Text(
-                              'Get Started Now',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.white,
+                            label: const Text('FIND A CURE'),
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/medicine');
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              foregroundColor: const Color(0xFF014478),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 30,
+                                vertical: 15,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              textStyle: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
@@ -688,100 +205,33 @@ class _MyHomePageState extends State<MyHomePage>
                       ],
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20.0,
+                      horizontal: 20.0,
+                    ),
+                    child: Center(
+                      // --- START OF FIX ---
+                      child: Image.asset(
+                        'assets/images/logo.png',
+                        // Set height as a fraction of the screen's height.
+                        height: MediaQuery.of(context).size.height * 0.4,
+                        fit: BoxFit.contain,
+                      ),
+                      // --- END OF FIX ---
+                    ),
+                  ),
                 ],
               ),
             ),
-            SizedBox(height: 20),
-
-            Container(
-              color: Color(0xffeef2f7),
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "STEP BY STEP",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueAccent,
-                      fontSize: 16,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    "How BSDOC Helps You",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xff0033aa),
-                    ),
-                  ),
-
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    height: 2,
-                    width: 60,
-                    color: Colors.blueAccent,
-                  ),
-                  _helpsAdvantageCard(
-                    icon: Icons.edit_square, // Pencil/edit icon
-                    iconBgColor: Color(0xFFc0d9ff), // Light blue
-                    iconColor: Color(0xFF215aF3), // Blue
-                    title: "Describe Your Symptoms",
-                    description:
-                        "Use our intuitive interface to input the symptoms you are experiencing.",
-                  ),
-                  _helpsAdvantageCard(
-                    icon: Icons.sticky_note_2,
-                    iconBgColor: Color(0xFFd3ffdf),
-                    iconColor: Color(0xFF00d43a),
-                    title: "Get Guided Information",
-                    description:
-                        "Receive potential causes, detailed self-care advices, and OTC medication guidance.",
-                  ),
-                  _helpsAdvantageCard(
-                    icon: Icons.security,
-                    iconBgColor: Color(0xFFf8dfff),
-                    iconColor: Color(0xFFb300e7),
-                    title: "Find Relief Safely",
-                    description:
-                        "Follow personalized tips and instructions to manage your condition effectively at home.",
-                  ),
-                  SizedBox(height: 10),
-                  Center(
-                    child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF0033aa),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 14,
-                        ),
-                      ),
-                      onPressed: () {
-                        // Handle navigation or action
-                      },
-                      icon: const Icon(
-                        Icons.arrow_forward,
-                        size: 18,
-                        color: Colors.white,
-                      ),
-                      label: const Text(
-                        'Get Started Now',
-                        style: TextStyle(fontSize: 14, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 40),
-                ],
-              ),
-            ),
-            const AppFooter(),
-          ],
-        ),
+          ),
+          Positioned(
+            left: 12,
+            right: 12,
+            bottom: 15 + MediaQuery.of(context).padding.bottom,
+            child: const GlobalBottomNav(currentIndex: 0),
+          ),
+        ],
       ),
     );
   }
