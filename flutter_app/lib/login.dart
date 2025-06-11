@@ -728,19 +728,19 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             ),
                           ),
                         ),
-                        Positioned(
-                          left: 12,
-                          right: 12,
-                          bottom: 15 + MediaQuery.of(context).padding.bottom,
-                          child: const GlobalBottomNav(
-                            currentIndex: 3,
-                          ), // Pass index 2 for the "Medicine" tab
-                        ),
                       ],
                     ),
                   ),
                 ),
               ),
+            ),
+            Positioned(
+              left: 12,
+              right: 12,
+              bottom: 15 + MediaQuery.of(context).padding.bottom,
+              child: const GlobalBottomNav(
+                currentIndex: 3,
+              ), // Pass index 2 for the "Medicine" tab
             ),
           ],
         ),
