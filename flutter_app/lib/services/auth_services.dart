@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:bsdoc_flutter/constants/api.dart';
 
@@ -9,7 +10,38 @@ class AuthService {
   // Use 10.0.2.2 for the Android emulator to connect to your local machine's localhost.
   // For iOS emulator, you can use 'localhost' or '127.0.0.1'.
   // For a physical device, use your computer's network IP address.
-  final String _baseUrl = isProd ? baseUrl : "http://10.0.2.2:8000";
+
+  //final String _baseUrl = isProd ? baseUrl : "http://10.0.2.2:8000";
+  final String _baseUrl = baseUrl;
+  
+  final _storage = const FlutterSecureStorage();
+
+  Future<Map<String, dynamic>> getProfile() async {
+    String? token = await _storage.read(key: 'accessToken');
+    if (token == null) {
+      throw Exception('Not authenticated');
+    }
+
+    final res = await http.get(
+      Uri.parse('$_baseUrl/users/me'),
+      headers: <String, String>{
+        'Content-Type' : 'application/json; charset=UTF-8',
+        'Authorization' : 'Bearer $token',
+      },
+    );
+
+    debugPrint("--- Flutter AuthService | getProfile ---");
+    debugPrint("Response Status Code: ${res.statusCode}");
+    debugPrint("Response Body: ${res.body}");
+
+    if (res.statusCode == 200) {
+      return jsonDecode(res.body);
+    }
+     else {
+      final errorDetail = jsonDecode(res.body)['detail'];
+      throw Exception(errorDetail ?? 'Failed to load profile.');
+     }
+  }
 
   Future<String> signup({
     required String email,

@@ -16,6 +16,9 @@ class AuthProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get token => _token;
 
+  Map<String, dynamic>? _userProfile;
+  Map<String, dynamic>? get userProfile => _userProfile;
+
   AuthProvider() {
     _init();
   }
@@ -29,6 +32,15 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
     
     _token = await _storage.read(key: 'accessToken');
+
+    if (_token != null) {
+      try {
+        _userProfile = await _authService.getProfile();
+      }
+      catch (e) {
+        await logout();
+      }
+    }
     debugPrint('Token from storage: $_token');
     _isLoading = false;
     notifyListeners();
@@ -43,6 +55,9 @@ class AuthProvider with ChangeNotifier {
       _token = accessToken;
 
       await _storage.write(key: 'accessToken', value: _token);
+
+      _userProfile = await _authService.getProfile();
+      debugPrint("--- AuthProvider | Profile set after login: $_userProfile ---");
 
       notifyListeners();
     } catch (e) {
@@ -77,6 +92,7 @@ class AuthProvider with ChangeNotifier {
     }
 
     _token = null;
+    _userProfile = null;
     await _storage.delete(key: 'accessToken');
 
     notifyListeners();

@@ -1,4 +1,4 @@
-// lib/components/main_app_bar.dart
+// lib/components/appbar.dart
 import 'package:bsdoc_flutter/providers/AuthProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:popover/popover.dart';
@@ -15,6 +15,18 @@ class ProfileMenuButton extends StatefulWidget {
 class _ProfileMenuButtonState extends State<ProfileMenuButton> {
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+    final imageUrl = authProvider.userProfile?['profile_image_url'];
+
+    ImageProvider backgroundImage;
+    if (imageUrl != null && imageUrl is String && imageUrl.isNotEmpty) {
+      backgroundImage = NetworkImage(imageUrl);
+    }
+    else {
+      backgroundImage = const AssetImage('assets/images/test.png');
+    }
+    debugPrint('imageUrl: $imageUrl');
+
     return GestureDetector(
       onTap: () {
         showPopover(
@@ -29,11 +41,18 @@ class _ProfileMenuButtonState extends State<ProfileMenuButton> {
           barrierColor: Colors.transparent,
         );
       },
-      child: const Padding(
+      child: Padding(
         padding: EdgeInsets.only(right: 5),
         child: CircleAvatar(
-          backgroundImage: AssetImage('assets/images/test.png'),
+          backgroundImage: backgroundImage,
           radius: 16,
+          onBackgroundImageError: (exception, stackTrace) {
+            debugPrint('Image load error: $exception');
+          },
+          // child: imageUrl == null || imageUrl.toString().isEmpty
+          //   ? const Icon(Icons.person, size: 16, color: Colors.white)
+          //   : null,
+          backgroundColor: Colors.grey,
         ),
       ),
     );
