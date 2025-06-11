@@ -2,7 +2,6 @@
 import 'package:bsdoc_flutter/components/appbar.dart';
 import 'package:bsdoc_flutter/profile.dart';
 import 'package:bsdoc_flutter/providers/AuthProvider.dart';
-import 'package:bsdoc_flutter/utils/auth_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:bsdoc_flutter/components/bottomnavbar.dart'; // Using your previous correct structure
@@ -232,7 +231,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final double bottomNavBarHeight = 60.0;
     final double bottomNavBarOffset = 15.0;
-    final loginStatus = isLoggedIn(context);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -241,90 +239,6 @@ class _MyHomePageState extends State<MyHomePage> {
         title: SvgPicture.asset('assets/images/logonew.svg', height: 40),
         appBarTextColor: appBarTextColor,
       ),
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   title: SvgPicture.asset('assets/images/logonew.svg', height: 40),
-      //   centerTitle: true,
-      //   automaticallyImplyLeading: false,
-      //   actions: [
-      //     if (loginStatus) ...[
-      //       IconButton(
-      //         icon: Padding(
-      //           padding: const EdgeInsets.only(right: 8.0),
-      //           child: Icon(
-      //             Icons.notifications_none,
-      //             color: appBarTextColor,
-      //             size: 28,
-      //           ),
-      //         ),
-      //         onPressed: () {
-      //           // TODO: Handle notifications
-      //           debugPrint("Notifications tapped");
-      //         },
-      //       ),
-      //       Padding(
-      //         padding: const EdgeInsets.only(right: 12),
-      //         child: ProfileMenuButton(),
-      //       ),
-      //     ] else
-      //       ...[],
-      //     // PopupMenuButton<String>(
-      //     //   offset: Offset(-20, 50),
-      //     //   icon: Padding(
-      //     //     padding: const EdgeInsets.only(right: 12),
-      //     //     child: Container(
-      //     //       width: 32,
-      //     //       height: 32,
-      //     //       decoration: BoxDecoration(
-      //     //         border: Border.all(color: Colors.white70, width: 2.0),
-      //     //         shape: BoxShape.circle,
-      //     //       ),
-      //     //       child: ClipOval(
-      //     //         child: Image.asset(
-      //     //           'assets/images/test.png',
-      //     //           fit: BoxFit.fill,
-      //     //           alignment: Alignment.center,
-      //     //         ),
-      //     //       ),
-      //     //     ),
-      //     //   ),
-      //     //   onSelected: (value) {
-      //     //     if (value == 'settings') {
-      //     //       debugPrint('go to settings');
-      //     //     } else if (value == 'logout') {
-      //     //       debugPrint('logout bitch');
-      //     //     }
-      //     //   },
-      //     //   itemBuilder: (BuildContext context) => [
-      //     //     PopupMenuItem(
-      //     //       value: 'settings',
-      //     //       child: Row(
-      //     //         children: [
-      //     //           Icon(Icons.person),
-      //     //           Padding(
-      //     //             padding: EdgeInsetsGeometry.only(left: 5),
-      //     //             child: Text('Settings'),
-      //     //           ),
-      //     //         ],
-      //     //       ),
-      //     //     ),
-      //     //     PopupMenuItem(
-      //     //       value: 'logout',
-      //     //       child: Row(
-      //     //         children: [
-      //     //           Icon(Icons.power_settings_new),
-      //     //           Padding(
-      //     //             padding: EdgeInsets.only(left: 5),
-      //     //             child: Text('Logout'),
-      //     //           ),
-      //     //         ],
-      //     //       ),
-      //     //     ),
-      //     //   ],
-      //     // ),
-      //   ],
-      // ),
       body: Stack(
         children: [
           Container(

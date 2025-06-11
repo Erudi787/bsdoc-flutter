@@ -113,8 +113,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
         debugPrint('Login handler completed successfully');
         Navigator.pushNamed(context, '/home');
       }
-
-      // TODO: save access_token and return to main
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
