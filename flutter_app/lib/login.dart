@@ -111,6 +111,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
 
         // Don't manually navigate - let the Consumer in MyApp handle it
         debugPrint('Login handler completed successfully');
+        Navigator.pushNamed(context, '/home');
       }
 
       // TODO: save access_token and return to main
@@ -549,6 +550,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
         extendBodyBehindAppBar: true,
         extendBody: true,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           centerTitle: true,
           title: const Text('BSDOC'),
           backgroundColor: Colors.transparent,
@@ -558,19 +560,17 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
-          leading: IconButton(
-            onPressed: () {
-              // if (!_showLogin) {
-              //   _toggleView();
-              // } else {
-              //   Navigator.pop(context);
-              // }
-              Navigator.pop(
-                context,
-              ); //diritso ra exit sa page regardless of unsa ang active form
-            },
-            icon: const Icon(Icons.arrow_back),
-          ),
+          // leading: IconButton(
+          //   onPressed: () {
+          //     // if (!_showLogin) {
+          //     //   _toggleView();
+          //     // } else {
+          //     //   Navigator.pop(context);
+          //     // }
+          //     Navigator.pushNamed(context, '/home');
+          //   },
+          //   icon: const Icon(Icons.arrow_back),
+          // ),
         ),
         body: Stack(
           children: [

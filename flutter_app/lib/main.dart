@@ -1,5 +1,6 @@
 // File: main.dart
 import 'package:bsdoc_flutter/components/appbar.dart';
+import 'package:bsdoc_flutter/profile.dart';
 import 'package:bsdoc_flutter/providers/AuthProvider.dart';
 import 'package:bsdoc_flutter/utils/auth_utils.dart';
 import 'package:flutter/material.dart';
@@ -169,27 +170,28 @@ class MyApp extends StatelessWidget {
       Color(0xFFBBA8DF),
     ];
 
-    final loginStatus = isLoggedIn(context);
+    //final loginStatus = isLoggedIn(context);
 
     return ChangeNotifierProvider(
       create: (_) => AuthProvider(),
       child: MaterialApp(
         title: 'BSDOC App',
-        home: Consumer<AuthProvider>(
-          builder: (ctx, auth, _) {
-            if (auth.isLoading) {
-              return const Scaffold(
-                body: Center(child: CircularProgressIndicator()),
-              );
-            }
+        home: const MyHomePage(gradientColors: gradientColors),
+        // home: Consumer<AuthProvider>(
+        //   builder: (ctx, auth, _) {
+        //     if (auth.isLoading) {
+        //       return const Scaffold(
+        //         body: Center(child: CircularProgressIndicator()),
+        //       );
+        //     }
 
-            if (auth.isLoggedIn) {
-              return const MyHomePage(gradientColors: gradientColors);
-            } else {
-              return const Login();
-            }
-          },
-        ),
+        //     if (auth.isLoggedIn) {
+        //       return const MyHomePage(gradientColors: gradientColors);
+        //     } else {
+        //       return const Login();
+        //     }
+        //   },
+        // ),
         debugShowCheckedModeBanner: false,
         //initialRoute: '/home',
         routes: {
@@ -197,7 +199,15 @@ class MyApp extends StatelessWidget {
               const MyHomePage(gradientColors: gradientColors),
           '/medicine': (context) =>
               const CurePage(gradientColors: gradientColors),
-          '/profile': (context) => Login(),
+          '/profile': (context) {
+            final loginStatus = Provider.of<AuthProvider>(
+              context,
+              listen: false,
+            ).isLoggedIn;
+            return loginStatus ? const ProfilePage() : Login();
+          },
+          '/login': (context) =>
+            const Login(),
           // Define other routes here
         },
       ),
@@ -229,7 +239,8 @@ class _MyHomePageState extends State<MyHomePage> {
       extendBody: true,
       appBar: MainAppBar(
         title: SvgPicture.asset('assets/images/logonew.svg', height: 40),
-        appBarTextColor: appBarTextColor),
+        appBarTextColor: appBarTextColor,
+      ),
       // appBar: AppBar(
       //   backgroundColor: Colors.transparent,
       //   elevation: 0,

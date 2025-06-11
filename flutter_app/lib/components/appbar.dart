@@ -21,8 +21,7 @@ class _ProfileMenuButtonState extends State<ProfileMenuButton> {
     ImageProvider backgroundImage;
     if (imageUrl != null && imageUrl is String && imageUrl.isNotEmpty) {
       backgroundImage = NetworkImage(imageUrl);
-    }
-    else {
+    } else {
       backgroundImage = const AssetImage('assets/images/test.png');
     }
     debugPrint('imageUrl: $imageUrl');
@@ -142,7 +141,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: title,
       centerTitle: true,
       // This will automatically add a back button when needed
-      automaticallyImplyLeading: true,
+      automaticallyImplyLeading: false,
       iconTheme: IconThemeData(color: appBarTextColor),
       titleTextStyle: TextStyle(
         color: appBarTextColor,
@@ -169,7 +168,39 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: ProfileMenuButton(),
               ),
             ]
-          : [],
+          : [
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 5, right: 25.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/login');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: const Color(0xFF4d2c9c),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 8,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          textStyle: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        child: const Text('SIGN IN'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
     );
   }
 
