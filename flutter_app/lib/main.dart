@@ -1,5 +1,6 @@
 // File: main.dart
 import 'package:bsdoc_flutter/components/appbar.dart';
+import 'package:bsdoc_flutter/doctors/registration.dart';
 import 'package:bsdoc_flutter/profile.dart';
 import 'package:bsdoc_flutter/providers/AuthProvider.dart';
 import 'package:flutter/material.dart';
@@ -207,6 +208,8 @@ class MyApp extends StatelessWidget {
           },
           '/login': (context) =>
             const Login(),
+          '/doctors/registration': (context) =>
+            const DoctorRegister(),
           // Define other routes here
         },
       ),

@@ -11,9 +11,9 @@ class AuthService {
   // For iOS emulator, you can use 'localhost' or '127.0.0.1'.
   // For a physical device, use your computer's network IP address.
 
-  //final String _baseUrl = isProd ? baseUrl : "http://10.0.2.2:8000";
-  final String _baseUrl = baseUrl;
-  
+  final String _baseUrl = isProd ? baseUrl : "http://10.0.2.2:8000";
+  //final String _baseUrl = baseUrl;
+
   final _storage = const FlutterSecureStorage();
 
   Future<Map<String, dynamic>> getProfile() async {
@@ -25,8 +25,8 @@ class AuthService {
     final res = await http.get(
       Uri.parse('$_baseUrl/users/me'),
       headers: <String, String>{
-        'Content-Type' : 'application/json; charset=UTF-8',
-        'Authorization' : 'Bearer $token',
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
       },
     );
 
@@ -36,11 +36,10 @@ class AuthService {
 
     if (res.statusCode == 200) {
       return jsonDecode(res.body);
-    }
-     else {
+    } else {
       final errorDetail = jsonDecode(res.body)['detail'];
       throw Exception(errorDetail ?? 'Failed to load profile.');
-     }
+    }
   }
 
   Future<String> signup({
@@ -64,6 +63,44 @@ class AuthService {
       // then throw an exception with the error detail from the server.
       final errorDetail = jsonDecode(response.body)['detail'];
       throw Exception(errorDetail ?? 'Failed to sign up.');
+    }
+  }
+
+  Future<String> doctorSignup({
+    required String email,
+    required String password,
+    required String firstName,
+    required String lastName,
+    required String filePath,
+    required String fileName,
+  }) async {
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse('$_baseUrl/doctors/registration'),
+    );
+
+    request.fields['firstName'] = firstName;
+    request.fields['lastName'] = lastName;
+    request.fields['email'] = email;
+    request.fields['password'] = password;
+
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'file', 
+        filePath,
+        filename: fileName,
+        ),
+    );
+
+    var streamedResponse = await request.send();
+    var res = await http.Response.fromStream(streamedResponse);
+    final resbody = jsonDecode(res.body);
+
+    if (res.statusCode == 200) {
+      return resbody['message'];
+    }
+    else {
+      throw Exception(resbody['detail'] ?? 'Failed to register as doctor.');
     }
   }
 

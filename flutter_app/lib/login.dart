@@ -117,7 +117,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Invalid email or password. Please try again.'),
+            content: Text("Error: $e"),
             backgroundColor: Colors.red,
           ),
         );
@@ -722,7 +722,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                   color: Colors.black,
                                 ),
                                 onTap: () {
-                                  // function here
+                                  Navigator.pushNamed(context, '/doctors/registration');
                                 },
                               ),
                             ),
