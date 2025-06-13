@@ -61,7 +61,8 @@ class _ProfilePageState extends State<ProfilePage> {
         extendBody: true, // Allows content to flow behind the floating bar
         appBar: MainAppBar(
           title: const Text('Find a Cure'),
-          appBarTextColor: appBarContentColor),
+          appBarTextColor: appBarContentColor,
+        ),
         // appBar: AppBar(
         //   centerTitle: true,
         //   title: const Text('Find a Cure'),
