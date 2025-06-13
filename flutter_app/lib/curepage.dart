@@ -1,4 +1,5 @@
 // File: lib/curepage.dart
+import 'package:bsdoc_flutter/components/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:bsdoc_flutter/components/bottomnavbar.dart'; // Import the global nav bar
 
@@ -58,20 +59,23 @@ class _CurePageState extends State<CurePage> {
         backgroundColor: Colors.transparent, // Important for gradient to show
         extendBodyBehindAppBar: true,
         extendBody: true, // Allows content to flow behind the floating bar
-        appBar: AppBar(
-          centerTitle: true,
+        appBar: MainAppBar(
           title: const Text('Find a Cure'),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          // Use the calculated color for the back arrow and title
-          iconTheme: IconThemeData(color: appBarContentColor),
-          titleTextStyle: TextStyle(
-            color: appBarContentColor,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-          // The back button is automatically added by Navigator, no need to define it manually
-        ),
+          appBarTextColor: appBarContentColor),
+        // appBar: AppBar(
+        //   centerTitle: true,
+        //   title: const Text('Find a Cure'),
+        //   backgroundColor: Colors.transparent,
+        //   elevation: 0,
+        //   // Use the calculated color for the back arrow and title
+        //   iconTheme: IconThemeData(color: appBarContentColor),
+        //   titleTextStyle: TextStyle(
+        //     color: appBarContentColor,
+        //     fontSize: 20,
+        //     fontWeight: FontWeight.bold,
+        //   ),
+        //   // The back button is automatically added by Navigator, no need to define it manually
+        // ),
         // --- START OF MODIFICATION ---
         // We replace the Scaffold's body and bottomNavigationBar with a Stack
         body: Stack(

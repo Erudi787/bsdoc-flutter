@@ -1,4 +1,4 @@
-// File: lib/global_bottom_nav.dart
+// File: lib/components/bottomnavbar.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -9,7 +9,6 @@ class GlobalBottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // --- Define your colors and icons here ---
     const barBackgroundColor = Color(0xFFABCFF3);
     const inactiveIconColor = Color(0xFF0D47A1);
     const activeIconColor = Colors.white;
@@ -19,12 +18,14 @@ class GlobalBottomNav extends StatelessWidget {
       'assets/images/home.svg',
       'assets/images/doctor.svg',
       'assets/images/medicine.svg',
-      'assets/images/profile.svg',
+      'assets/images/profile.svg', // 4th icon
       'assets/images/menu.svg',
     ];
 
-    // Map icons to their routes
+    // --- THIS LIST MUST BE IN THE CORRECT ORDER ---
+    // The 4th route here must be '/profile' to match the 4th icon above.
     final routes = ['/home', '/doctors', '/medicine', '/profile', '/menu'];
+    // --- END VERIFICATION ---
 
     return Container(
       height: 60.0,
@@ -41,9 +42,8 @@ class GlobalBottomNav extends StatelessWidget {
             return Expanded(
               child: InkWell(
                 onTap: () {
-                  // Don't navigate if we are already on the selected page
                   if (!isActive) {
-                    // Use pushReplacementNamed to avoid building a stack of pages
+                    // This will navigate to the route at the specific index
                     Navigator.pushReplacementNamed(context, routes[index]);
                   }
                 },
