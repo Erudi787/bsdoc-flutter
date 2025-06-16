@@ -3,17 +3,29 @@ import 'dart:async';
 
 import 'package:bsdoc_flutter/components/appbar.dart';
 import 'package:bsdoc_flutter/components/bottomnavbar.dart';
+import 'package:bsdoc_flutter/models/appointment.dart';
 import 'package:bsdoc_flutter/providers/AuthProvider.dart';
+import 'package:bsdoc_flutter/services/appointment_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class AppointmentCard extends StatelessWidget {
-  const AppointmentCard({super.key});
+  final Appointment appointment;
+  const AppointmentCard({super.key, required this.appointment});
 
   @override
   Widget build(BuildContext context) {
+    String formatTime(String time) {
+      try {
+        final parsedTime = DateFormat("HH:mm:ss").parse(time);
+        return DateFormat("h:mm a").format(parsedTime);
+      } catch (e) {
+        return time;
+      }
+    }
+    
     return Container(
       width: 120,
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -32,37 +44,46 @@ class AppointmentCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const CircleAvatar(
+          CircleAvatar(
             radius: 24,
+            backgroundColor: Colors.grey,
             // TODO: Use NetworkImage for patient's profile picture
-            backgroundImage: AssetImage('assets/images/test.png'),
+            backgroundImage: (appointment.patient.profileImageUrl != null && appointment.patient.profileImageUrl!.isNotEmpty)
+            ? NetworkImage(appointment.patient.profileImageUrl!)
+            : null,
+            child: (appointment.patient.profileImageUrl == null || appointment.patient.profileImageUrl!.isEmpty) 
+            ? const Icon(Icons.person, color: Colors.grey)
+            : null,
           ),
           const SizedBox(height: 8),
-          const Text(
-            "Theo Gwapo", // TODO: Use patient's name
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+          Text(
+            appointment.patient.fullName, // TODO: Use patient's name
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
             textAlign: TextAlign.center,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
+          Divider(),
           const Text(
             "Online", // TODO: Use appointment type
             style: TextStyle(fontSize: 10, color: Colors.black54),
           ),
           const Spacer(),
           Container(
+            width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: const Color(0xFF2C3E50),
+              color: const Color(0xFF004aad),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Text(
-              "11:00 AM", // TODO: Use appointment time
-              style: TextStyle(
+            child: Text(
+              formatTime(appointment.appointmentTime), // TODO: Use appointment time
+              style: const TextStyle(
                 color: Colors.white,
-                fontSize: 10,
+                fontSize: 12,
                 fontWeight: FontWeight.bold,
               ),
+              textAlign: TextAlign.center,
             ),
           ),
         ],
@@ -98,7 +119,7 @@ class _TimeBasedGreetingState extends State<TimeBasedGreeting> {
         greeting = "Good noon!";
       } else if (hour >= 13 && hour < 17) {
         greeting = "Good afternoon!";
-      } else if (hour > 17) {
+      } else if (hour >= 17) {
         greeting = "Good evening!";
       } else {
         greeting = "Good night!";
@@ -138,14 +159,14 @@ class _HomePageDoctorState extends State<HomePageDoctor> {
   DateTime _selectedDate = DateTime.now();
 
   bool _isLoadingAppointments = true;
-  // TODO: List<Appointment> _appointments = [];
-  // TODO: final AppointmentService _appointmentService = AppointmentService();
+  List<Appointment> _appointments = [];
+  final AppointmentService _appointmentService = AppointmentService();
 
   @override
   void initState() {
     super.initState();
     _generateWeekDays();
-    _fetchAppointmentsForDate();
+    _fetchAppointmentsForDate(_selectedDate);
   }
 
   void _generateWeekDays() {
@@ -156,28 +177,56 @@ class _HomePageDoctorState extends State<HomePageDoctor> {
     }
   }
 
-  void _fetchAppointmentsForDate() {
+  void _fetchAppointmentsForDate(DateTime date) async {
     setState(() {
       _isLoadingAppointments = true;
     });
 
     // TODO: Call appoinment service
-    // For now, simulate delay and empty list
-    Future.delayed(const Duration(seconds: 1), () {
+    try {
+      final fetchedAppointments = await _appointmentService
+          .fetchAppointmentsForDate(date);
       if (mounted) {
         setState(() {
-          // _appointments = fetchedData;
+          _appointments = fetchedAppointments;
+        });
+      }
+    } 
+    catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Error fetching appointments: ${e.toString().replaceFirst('Exception', '')}',
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+    finally {
+      if (mounted) {
+        setState(() {
           _isLoadingAppointments = false;
         });
       }
-    });
+    }
+    // For now, simulate delay and empty list
+    // Future.delayed(const Duration(seconds: 1), () {
+    //   if (mounted) {
+    //     setState(() {
+    //       // _appointments = fetchedData;
+    //       _isLoadingAppointments = false;
+    //     });
+    //   }
+    // });
   }
 
   void _onDateSelected(DateTime date) {
     setState(() {
       _selectedDate = date;
     });
-    _fetchAppointmentsForDate();
+    _fetchAppointmentsForDate(date);
   }
 
   Widget _buildDateSelector() {
@@ -228,42 +277,56 @@ class _HomePageDoctorState extends State<HomePageDoctor> {
     );
   }
 
+  Widget _buildManageTile(BuildContext context, IconData icon, String title, String route) {
+    return Card(
+      elevation: 2,
+      margin: const EdgeInsets.symmetric(vertical: 6),
+      child: ListTile(
+        leading: Icon(icon, color: Color(0xFF004aad)),
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+        onTap: () {
+          //TODO: Implement nav e.g. Navigator.pushNamed(context, route);
+          debugPrint("Navigate to $title");
+        },
+      ),
+    );
+  }
+
   Widget _buildScheduleList() {
     return Container(
-      height: 150,
+      height: 175,
       child: _isLoadingAppointments
           ? const Center(child: CircularProgressIndicator())
-          : false //change to `_appointments.isEmpty` when data is available
+          : _appointments.isEmpty
           ? const Center(
               child: Text(
-                '-- Nothing follows --',
-                style: TextStyle(color: Colors.black54),
+                '⸻ Nothing follows ⸻',
+                style: TextStyle(color: Colors.grey, fontSize: 24, fontWeight: FontWeight.bold),
               ),
             )
           : ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: 5 + 1,
+              itemCount: _appointments.length + 1,
               itemBuilder: (context, index) {
                 final double leftPadding = (index == 0) ? 12 : 0;
 
-                if (index == 5) {
+                if (index == _appointments.length) {
                   return Container(
                     margin: const EdgeInsets.only(left: 16, right: 24),
                     alignment: Alignment.center,
                     child: const Text(
-                      "-- Nothing follows --",
-                      style: TextStyle(color: Colors.black54),
+                      "⸻ Nothing follows ⸻",
+                      style: TextStyle(color: Colors.grey, fontSize: 22, fontWeight: FontWeight.bold),
                     ),
                   );
                 }
-
-                //TODO: get actual appointment from list
-                // final appointment = _appointment[index];
+                
+                final appointment = _appointments[index];
 
                 //placeholder for appointment card
                 return Padding(
                   padding: EdgeInsets.only(left: leftPadding),
-                  child: const AppointmentCard(),
+                  child: AppointmentCard(appointment: appointment),
                 );
               },
             ),
@@ -361,17 +424,17 @@ class _HomePageDoctorState extends State<HomePageDoctor> {
                           const SizedBox(height: 3),
                           // --- CONTENT INSIDE THE WHITE CONTAINER GOES HERE ---
                           _buildDateSelector(),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: 10),
                           Padding(
                             padding: const EdgeInsets.only(
                               left: 20,
                               right: 20,
-                              bottom: 12,
+                              // bottom: 10,
                             ),
                             child: Text(
                               'Schedule',
                               style: TextStyle(
-                                fontSize: 22,
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey.shade800,
                               ),
@@ -380,27 +443,37 @@ class _HomePageDoctorState extends State<HomePageDoctor> {
                           _buildScheduleList(),
 
                           // TODO: Add your Schedule widgets (e.g., Row with date buttons, appointment cards)
-                          const SizedBox(height: 24),
+                          const SizedBox(height: 12),
 
                           Padding(
                             padding: const EdgeInsets.only(
                               left: 20,
                               right: 20,
-                              bottom: 16,
+                              // bottom: 16,
                             ),
                             child: Text(
                               'Manage',
                               style: TextStyle(
-                                fontSize: 22,
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey.shade800,
                               ),
                             ),
                           ),
                           // TODO: Add your Manage widgets (e.g., ListTile for Appointments)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            child: Column(
+                              children: [
+                                _buildManageTile(context, Icons.calendar_today_outlined, 'Appointments', '/appointments'),
+                                _buildManageTile(context, Icons.access_time_filled, 'Availability', '/availability'),
+                                _buildManageTile(context, Icons.person_outline, 'Profesional Details', '/profile-details'),
+                              ],
+                            ),
+                            ),
 
                           // This is just a placeholder to ensure scrolling
-                          const SizedBox(height: 500),
+                          const SizedBox(height: 200),
                         ],
                       ),
                     ),

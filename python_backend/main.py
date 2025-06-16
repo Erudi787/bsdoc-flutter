@@ -151,7 +151,7 @@ async def doctorSignup(
         if existing_user_res.count > 0:
             raise HTTPException(status_code=409, detail="This email is already registered.")
     except HTTPException:
-        raise
+        raise HTTPException(status_code=500, detail="Error checking existing user")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error checking existing user: {str(e)}")
         
@@ -258,14 +258,15 @@ async def get_my_appointments_for_date(
 ):
     doctor_id = current_user.id
     
-    res = supabase_admin.from_("appointments") \
+    try:
+        res = supabase_admin.from_("appointments") \
         .select("*, patient:profiles(id, first_name, last_name, profile_image_url)") \
         .eq("doctor_id", doctor_id) \
         .eq("appointment_date", date) \
-        .order("appointment_time", ascending=True) \
+        .order("appointment_time", desc=False) \
         .execute()
     
-    if res.error:
-        raise HTTPException(status_code=500, detail=f"Database error: {res.error.message}")
+        return res.data
     
-    return res.data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")

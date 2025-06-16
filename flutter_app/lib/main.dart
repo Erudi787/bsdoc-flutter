@@ -104,7 +104,15 @@ class AuthWrapper extends StatelessWidget {
               Color(0xFFBBA8DF),
             ],
           );
-        } else {
+        } 
+        else if (auth.isLoggedIn && auth.userRole == 'doctor') {
+          return const HomePageDoctor(gradientColors: [
+              Color(0xFF44A2E6),
+              Color(0xFFABCFF3),
+              Color(0xFFBBA8DF),
+            ]);
+        }
+        else {
           return const Login();
         }
       },
