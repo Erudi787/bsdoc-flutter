@@ -18,6 +18,9 @@ class AuthProvider with ChangeNotifier {
 
   Map<String, dynamic>? _userProfile;
   Map<String, dynamic>? get userProfile => _userProfile;
+  String? get userRole => _userProfile?['role'];
+  String? get userFirstName => _userProfile?['first_name'];
+  String? get userLastName => _userProfile?['last_name'];
 
   AuthProvider() {
     _init();

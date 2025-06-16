@@ -250,3 +250,22 @@ async def cleanup_failed_registration(user_id: str, uploaded_file_path: str):
             print(f"Rolled back storage file: {uploaded_file_path}")
         except Exception as delete_error:
             print(f"Failed to rollback storage file: {delete_error}")
+
+@app.get("/doctors/me/appointments")
+async def get_my_appointments_for_date(
+    current_user: Annotated[dict, Depends(get_current_user)]  ,
+    date: str
+):
+    doctor_id = current_user.id
+    
+    res = supabase_admin.from_("appointments") \
+        .select("*, patient:profiles(id, first_name, last_name, profile_image_url)") \
+        .eq("doctor_id", doctor_id) \
+        .eq("appointment_date", date) \
+        .order("appointment_time", ascending=True) \
+        .execute()
+    
+    if res.error:
+        raise HTTPException(status_code=500, detail=f"Database error: {res.error.message}")
+    
+    return res.data

@@ -1,5 +1,6 @@
 // File: lib/main.dart
 import 'package:bsdoc_flutter/components/appbar.dart';
+import 'package:bsdoc_flutter/doctors/home_page_doctor.dart';
 import 'package:bsdoc_flutter/doctors/registration.dart';
 import 'package:bsdoc_flutter/profilepage.dart'; // Import your new profilepage.dart
 import 'package:bsdoc_flutter/providers/AuthProvider.dart';
@@ -47,7 +48,19 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: const AuthWrapper(),
         routes: {
-          '/home': (context) => const HomePage(gradientColors: gradientColors),
+          // '/home': (context) => const HomePage(gradientColors: gradientColors),
+          '/home': (context) {
+            final authProvider = Provider.of<AuthProvider>(
+              context,
+              listen: false
+            );
+            if (authProvider.isLoggedIn && authProvider.userRole == 'doctor') {
+              return const HomePageDoctor(gradientColors: gradientColors);
+            }
+            else {
+              return const HomePage(gradientColors: gradientColors);
+            }
+          },
           '/medicine': (context) =>
               const CurePage(gradientColors: gradientColors),
           '/profile': (context) {
