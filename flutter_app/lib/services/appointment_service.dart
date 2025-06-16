@@ -1,13 +1,16 @@
 // lib/services/appointment_service.dart
 
 import 'dart:convert';
+import 'package:bsdoc_flutter/constants/api.dart';
 import 'package:bsdoc_flutter/models/appointment.dart'; // Import your new model
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart'; // For formatting the date
 
+const bool isProd = bool.fromEnvironment('dart.vm.product');
 class AppointmentService {
-  final String _baseUrl = "http://10.0.2.2:8000";
+  final String _baseUrl = isProd ? baseUrl : "http://10.0.2.2:8000";
+  //final String _baseUrl = baseUrl;
   final _storage = const FlutterSecureStorage();
 
   /// Fetches appointments for the logged-in doctor for a specific date.
