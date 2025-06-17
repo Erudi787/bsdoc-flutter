@@ -1,0 +1,14 @@
+name: Keep Render Alive
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"  # Runs every 10 minutes (UTC)
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Curl the Render URL
+        run: |
+          curl --silent --show-error --fail https://bsdoc-flutter-backend.onrender.com/
