@@ -1,8 +1,10 @@
 name: Keep Render Alive
 
 on:
+  workflow_dispatch:   # 👈 Enables manual runs
   schedule:
-    - cron: "*/10 * * * *"  # Runs every 10 minutes (UTC)
+    - cron: "*/10 * * * *"
+
 
 jobs:
   keepalive:
