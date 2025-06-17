@@ -33,6 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final userProfile = authProvider.userProfile;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
       extendBody: true,
       // Using your custom MainAppBar component

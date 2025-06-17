@@ -99,7 +99,7 @@ class _ProfileMenuButtonState extends State<ProfileMenuButton> {
                             foregroundColor: Colors.red, // For emphasis
                           ),
                           child: const Text('Logout'),
-                          onPressed: () {
+                          onPressed: () async {
                             // Close the dialog
                             Navigator.of(dialogContext).pop();
                             Navigator.pop(context); // Close popover
@@ -108,6 +108,11 @@ class _ProfileMenuButtonState extends State<ProfileMenuButton> {
                               context,
                               listen: false,
                             ).logout();
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              '/home',
+                              (Route<dynamic> route) => false,
+                            );
                           },
                         ),
                       ],

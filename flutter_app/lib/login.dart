@@ -18,6 +18,11 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   late TextEditingController _registerEmailController;
   late TextEditingController _registerPasswordController;
   late TextEditingController _registerConfirmPasswordController;
+  final _emailFocus = FocusNode();
+  final _passwordFocus = FocusNode();
+  final _registerEmailFocus = FocusNode();
+  final _registerPasswordFocus = FocusNode();
+  final _registerConfirmPasswordFocus = FocusNode();
   bool _isPasswordVisible = false;
   bool _isRegisterPasswordVisible = false;
   bool _isRegisterConfirmPasswordVisible = false;
@@ -205,6 +210,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
       children: [
         TextField(
           controller: _emailController,
+          focusNode: _emailFocus,
+          textInputAction: TextInputAction.next,
           style: const TextStyle(color: Colors.black),
           decoration: InputDecoration(
             // hintText: 'Email',
@@ -236,7 +243,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             prefixIcon: Icon(Icons.person, color: Colors.black),
           ),
           onChanged: (text) {},
-          onSubmitted: (text) {},
+          onSubmitted: (text) {
+            FocusScope.of(context).requestFocus(_passwordFocus);
+          },
         ),
         SizedBox(height: 15),
 
@@ -244,6 +253,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
         TextField(
           controller: _passwordController,
           obscureText: !_isPasswordVisible,
+          focusNode: _passwordFocus,
+          textInputAction: TextInputAction.done,
           style: const TextStyle(color: Colors.black),
           decoration: InputDecoration(
             // hintText: 'Password',
@@ -288,7 +299,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             ),
           ),
           onChanged: (text) {},
-          onSubmitted: (text) {},
+          onSubmitted: (text) {
+            if (!_isLoading) _handleLogin();
+          },
         ),
         SizedBox(height: 25),
         FractionallySizedBox(
@@ -347,6 +360,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
       children: [
         TextField(
           controller: _registerEmailController,
+          focusNode: _registerEmailFocus,
+          textInputAction: TextInputAction.next,
           style: const TextStyle(color: Colors.black),
           decoration: InputDecoration(
             // hintText: 'Email',
@@ -378,7 +393,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             prefixIcon: Icon(Icons.person, color: Colors.black),
           ),
           onChanged: (text) {},
-          onSubmitted: (text) {},
+          onSubmitted: (text) {
+            FocusScope.of(context).requestFocus(_registerPasswordFocus);
+          },
         ),
         SizedBox(height: 15),
 
@@ -386,6 +403,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
         TextField(
           controller: _registerPasswordController,
           obscureText: !_isRegisterPasswordVisible,
+          focusNode: _registerPasswordFocus,
+          textInputAction: TextInputAction.next,
           style: const TextStyle(color: Colors.black),
           decoration: InputDecoration(
             // hintText: 'Password',
@@ -430,7 +449,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             ),
           ),
           onChanged: (text) {},
-          onSubmitted: (text) {},
+          onSubmitted: (text) {
+            FocusScope.of(context).requestFocus(_registerConfirmPasswordFocus);
+          },
         ),
         SizedBox(height: 25),
 
@@ -438,6 +459,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
         TextField(
           controller: _registerConfirmPasswordController,
           obscureText: !_isRegisterConfirmPasswordVisible,
+          focusNode: _registerConfirmPasswordFocus,
+          textInputAction: TextInputAction.done,
           style: const TextStyle(color: Colors.black),
           decoration: InputDecoration(
             // hintText: 'Confirm Password',
@@ -483,7 +506,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             ),
           ),
           onChanged: (text) {},
-          onSubmitted: (text) {},
+          onSubmitted: (text) {
+            if (!_isLoading) _handleSignup();
+          },
         ),
         SizedBox(height: 25),
 
@@ -545,6 +570,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
         FocusScope.of(context).unfocus(); //for text field unfocus
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
         extendBody: true,
         appBar: AppBar(
@@ -722,7 +748,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                   color: Colors.black,
                                 ),
                                 onTap: () {
-                                  Navigator.pushNamed(context, '/doctors/registration');
+                                  Navigator.pushNamedAndRemoveUntil(context, '/doctors/registration', (Route<dynamic> route)=> false);
                                 },
                               ),
                             ),

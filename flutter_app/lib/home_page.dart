@@ -23,6 +23,7 @@ class _HomePageState extends State<HomePage> {
     final double bottomNavBarOffset = 15.0;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
       extendBody: true,
       appBar: PreferredSize(

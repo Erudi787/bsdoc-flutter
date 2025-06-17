@@ -56,6 +56,7 @@ class _CurePageState extends State<CurePage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(), // Dismiss keyboard on tap
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent, // Important for gradient to show
         extendBodyBehindAppBar: true,
         extendBody: true, // Allows content to flow behind the floating bar

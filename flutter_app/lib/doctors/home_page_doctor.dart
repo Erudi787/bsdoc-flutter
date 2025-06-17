@@ -345,6 +345,7 @@ class _HomePageDoctorState extends State<HomePageDoctor> {
         : Colors.black;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
       extendBody: true,
       appBar: PreferredSize(
