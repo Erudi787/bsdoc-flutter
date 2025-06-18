@@ -17,6 +17,7 @@ class _ProfileMenuButtonState extends State<ProfileMenuButton> {
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
     final imageUrl = authProvider.userProfile?['profile_image_url'];
+    bool _isLoggedout = false;
 
     ImageProvider backgroundImage;
     if (imageUrl != null && imageUrl is String && imageUrl.isNotEmpty) {
@@ -110,7 +111,7 @@ class _ProfileMenuButtonState extends State<ProfileMenuButton> {
                             ).logout();
                             Navigator.pushNamedAndRemoveUntil(
                               context,
-                              '/home',
+                              '/login',
                               (Route<dynamic> route) => false,
                             );
                           },
