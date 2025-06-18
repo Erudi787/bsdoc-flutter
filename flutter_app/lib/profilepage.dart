@@ -5,6 +5,7 @@ import 'package:bsdoc_flutter/providers/AuthProvider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:bsdoc_flutter/providers/AuthProvider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -17,6 +18,9 @@ class _ProfilePageState extends State<ProfilePage> {
   bool _pushNotificationsEnabled = true;
   bool _emailNotificationsEnabled = false;
 
+  // This variable tracks the state of the expandable section
+  bool _isHealthProfileExpanded = false;
+
   @override
   Widget build(BuildContext context) {
     const gradientColors = [
@@ -28,7 +32,6 @@ class _ProfilePageState extends State<ProfilePage> {
         ? Colors.white
         : Colors.black;
 
-    // Listen to AuthProvider to get user details for the header
     final authProvider = Provider.of<AuthProvider>(context);
     final userProfile = authProvider.userProfile;
 
@@ -36,7 +39,6 @@ class _ProfilePageState extends State<ProfilePage> {
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
       extendBody: true,
-      // Using your custom MainAppBar component
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: MainAppBar(
@@ -69,15 +71,108 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Column(
                 children: [
                   _buildProfileHeader(userProfile, authProvider),
+                  // THIS SECTION IS UPDATED TO INCLUDE THE EXPANSION TILE
                   _buildSectionCard(
                     title: "General",
                     children: [
-                      _buildInfoRow(
-                        context,
-                        icon: Icons.person_outline,
-                        text: "My Health Profile",
-                        onTap: () {},
+                      // This is the new ExpansionTile for "My Health Profile"
+                      ExpansionTile(
+                        key: const PageStorageKey('health_profile'),
+                        title: Row(
+                          children: const [
+                            Icon(
+                              Icons.person_outline,
+                              color: Colors.white,
+                              size: 25,
+                            ),
+                            SizedBox(width: 16),
+                            Text(
+                              "My Health Profile",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                        collapsedIconColor: Colors.white,
+                        iconColor: Colors.white,
+                        tilePadding: const EdgeInsets.symmetric(
+                          vertical: 0.0,
+                          horizontal: 16.0,
+                        ),
+                        // This is the content that shows when expanded
+                        children: <Widget>[
+                          Container(
+                            color: Colors.white.withOpacity(0.05),
+                            child: const Column(
+                              children: [
+                                ListTile(
+                                  leading: Icon(
+                                    Icons.cake_outlined,
+                                    color: Colors.white70,
+                                  ),
+                                  title: Text(
+                                    "Date of Birth",
+                                    style: TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 10,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    "January 1, 1990",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ),
+                                ListTile(
+                                  leading: Icon(
+                                    Icons.bloodtype_outlined,
+                                    color: Colors.white70,
+                                  ),
+                                  title: Text(
+                                    "Blood Type",
+                                    style: TextStyle(color: Colors.white70),
+                                  ),
+                                  subtitle: Text(
+                                    "O+",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                                ListTile(
+                                  leading: Icon(
+                                    Icons.warning_amber_outlined,
+                                    color: Colors.white70,
+                                  ),
+                                  title: Text(
+                                    "Allergies",
+                                    style: TextStyle(color: Colors.white70),
+                                  ),
+                                  subtitle: Text(
+                                    "None Reported",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                        onExpansionChanged: (bool expanding) {
+                          setState(() {
+                            _isHealthProfileExpanded = expanding;
+                          });
+                        },
+                        initiallyExpanded: _isHealthProfileExpanded,
                       ),
+                      // The "Payment Methods" row remains a simple tappable row
                       _buildInfoRow(
                         context,
                         icon: Icons.payment_outlined,
@@ -132,20 +227,26 @@ class _ProfilePageState extends State<ProfilePage> {
             left: 12,
             right: 12,
             bottom: 15 + MediaQuery.of(context).padding.bottom,
-            child: const GlobalBottomNav(
-              currentIndex: 3,
-            ), // Pass index 3 for Profile
+            child: const GlobalBottomNav(currentIndex: 3),
           ),
         ],
       ),
     );
   }
 
-  // --- HELPER WIDGETS TO BUILD THE UI ---
   Widget _buildProfileHeader(
     Map<String, dynamic>? user,
     AuthProvider authProvider,
   ) {
+    final userFirstName = Provider.of<AuthProvider>(
+      context,
+      listen: false,
+    ).userFirstName;
+    final userLastName = Provider.of<AuthProvider>(
+      context,
+      listen: false,
+    ).userLastName;
+    final userFullName = '$userFirstName $userLastName';
     String? imageUrl = user?['profile_image_url'];
     ImageProvider profileImage = (imageUrl != null && imageUrl.isNotEmpty)
         ? NetworkImage(imageUrl)
@@ -162,7 +263,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           const SizedBox(height: 12),
           Text(
-            user?['full_name'] ?? 'User Name',
+            user?['User'] ?? userFullName,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 26,
@@ -186,7 +287,6 @@ class _ProfilePageState extends State<ProfilePage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
-        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.1),
           borderRadius: BorderRadius.circular(20),
@@ -194,16 +294,19 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+              child: Text(
+                title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-            const SizedBox(height: 8),
             ListView.separated(
+              padding: const EdgeInsets.only(bottom: 8.0),
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: children.length,
@@ -226,7 +329,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12.0),
+        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
         child: Row(
           children: [
             Icon(icon, color: Colors.white, size: 24),
@@ -252,7 +355,7 @@ class _ProfilePageState extends State<ProfilePage> {
     required ValueChanged<bool> onChanged,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0),
       child: Row(
         children: [
           Icon(icon, color: Colors.white, size: 24),
