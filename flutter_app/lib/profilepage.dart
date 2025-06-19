@@ -66,18 +66,16 @@ class _ProfilePageState extends State<ProfilePage> {
             child: SingleChildScrollView(
               padding: EdgeInsets.only(
                 top: kToolbarHeight + MediaQuery.of(context).padding.top,
-                bottom: 60 + 15 + MediaQuery.of(context).padding.bottom + 20,
+                bottom: 60 + 15 + MediaQuery.of(context).padding.bottom + 10,
               ),
               child: Column(
                 children: [
                   _buildProfileHeader(userProfile, authProvider),
-                  // THIS SECTION IS UPDATED TO INCLUDE THE EXPANSION TILE
                   _buildSectionCard(
-                    title: "General",
+                    title: "My Profile",
                     children: [
-                      // This is the new ExpansionTile for "My Health Profile"
                       ExpansionTile(
-                        key: const PageStorageKey('health_profile'),
+                        key: const PageStorageKey('personal_info'),
                         title: Row(
                           children: const [
                             Icon(
@@ -87,7 +85,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             SizedBox(width: 16),
                             Text(
-                              "My Health Profile",
+                              "Personal Information",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
@@ -116,14 +114,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                     "Date of Birth",
                                     style: TextStyle(
                                       color: Colors.white70,
-                                      fontSize: 10,
+                                      fontSize: 15,
                                     ),
                                   ),
                                   subtitle: Text(
                                     "January 1, 1990",
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 15,
+                                      fontSize: 14,
                                     ),
                                   ),
                                 ),
@@ -146,15 +144,32 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 ListTile(
                                   leading: Icon(
-                                    Icons.warning_amber_outlined,
+                                    Icons.height,
                                     color: Colors.white70,
                                   ),
                                   title: Text(
-                                    "Allergies",
+                                    "Height",
                                     style: TextStyle(color: Colors.white70),
                                   ),
                                   subtitle: Text(
-                                    "None Reported",
+                                    "165 cm",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                                ListTile(
+                                  leading: Icon(
+                                    Icons.monitor_weight_outlined,
+                                    color: Colors.white70,
+                                  ),
+                                  title: Text(
+                                    "Weight",
+                                    style: TextStyle(color: Colors.white70),
+                                  ),
+                                  subtitle: Text(
+                                    "65 kg",
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,
@@ -172,50 +187,207 @@ class _ProfilePageState extends State<ProfilePage> {
                         },
                         initiallyExpanded: _isHealthProfileExpanded,
                       ),
-                      // The "Payment Methods" row remains a simple tappable row
-                      _buildInfoRow(
-                        context,
-                        icon: Icons.payment_outlined,
-                        text: "Payment Methods",
-                        onTap: () {},
+                    ],
+                  ),
+                  _buildSectionCard(
+                    title: "Medical History",
+                    children: [
+                      ExpansionTile(
+                        key: const PageStorageKey('personal_info'),
+                        title: Row(
+                          children: const [
+                            Icon(
+                              Icons.person_outline,
+                              color: Colors.white,
+                              size: 25,
+                            ),
+                            SizedBox(width: 16),
+                            Text(
+                              "Medical Record",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                        collapsedIconColor: Colors.white,
+                        iconColor: Colors.white,
+                        tilePadding: const EdgeInsets.symmetric(
+                          vertical: 0.0,
+                          horizontal: 16.0,
+                        ),
+                        // This is the content that shows when expanded
+                        children: <Widget>[
+                          Container(
+                            color: Colors.white.withOpacity(0.05),
+                            child: const Column(
+                              children: [
+                                ListTile(
+                                  leading: Icon(
+                                    Icons.medical_information_outlined,
+                                    color: Colors.white70,
+                                  ),
+                                  title: Text(
+                                    "Health Conditions: ",
+                                    style: TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    "None",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                                ListTile(
+                                  leading: Icon(
+                                    Icons.fastfood_outlined,
+                                    color: Colors.white70,
+                                  ),
+                                  title: Text(
+                                    "Allergies",
+                                    style: TextStyle(color: Colors.white70),
+                                  ),
+                                  subtitle: Text(
+                                    "Peanuts",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                                ListTile(
+                                  leading: Icon(
+                                    Icons.height,
+                                    color: Colors.white70,
+                                  ),
+                                  title: Text(
+                                    "Medications",
+                                    style: TextStyle(color: Colors.white70),
+                                  ),
+                                  subtitle: Text(
+                                    "something pang maintenance",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                                ListTile(
+                                  leading: Icon(
+                                    Icons.monitor_weight_outlined,
+                                    color: Colors.white70,
+                                  ),
+                                  title: Text(
+                                    "Past Surgeries",
+                                    style: TextStyle(color: Colors.white70),
+                                  ),
+                                  subtitle: Text(
+                                    "opera sa kuko",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                        onExpansionChanged: (bool expanding) {
+                          setState(() {
+                            _isHealthProfileExpanded = expanding;
+                          });
+                        },
+                        initiallyExpanded: _isHealthProfileExpanded,
                       ),
                     ],
                   ),
                   _buildSectionCard(
-                    title: "Notifications",
+                    title: "Medical History",
                     children: [
-                      _buildSwitchRow(
-                        context,
-                        icon: Icons.notifications_active_outlined,
-                        text: "Push Notifications",
-                        value: _pushNotificationsEnabled,
-                        onChanged: (value) =>
-                            setState(() => _pushNotificationsEnabled = value),
-                      ),
-                      _buildSwitchRow(
-                        context,
-                        icon: Icons.email_outlined,
-                        text: "Email Notifications",
-                        value: _emailNotificationsEnabled,
-                        onChanged: (value) =>
-                            setState(() => _emailNotificationsEnabled = value),
-                      ),
-                    ],
-                  ),
-                  _buildSectionCard(
-                    title: "More",
-                    children: [
-                      _buildInfoRow(
-                        context,
-                        icon: Icons.help_outline,
-                        text: "Help & Support",
-                        onTap: () {},
-                      ),
-                      _buildInfoRow(
-                        context,
-                        icon: Icons.gavel_outlined,
-                        text: "Terms and Conditions",
-                        onTap: () {},
+                      ExpansionTile(
+                        key: const PageStorageKey('personal_info'),
+                        title: Row(
+                          children: const [
+                            Icon(
+                              Icons.person_outline,
+                              color: Colors.white,
+                              size: 25,
+                            ),
+                            SizedBox(width: 16),
+                            Text(
+                              "BSDOC Records",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                        collapsedIconColor: Colors.white,
+                        iconColor: Colors.white,
+                        tilePadding: const EdgeInsets.symmetric(
+                          vertical: 0.0,
+                          horizontal: 16.0,
+                        ),
+                        // This is the content that shows when expanded
+                        children: <Widget>[
+                          Container(
+                            color: Colors.white.withOpacity(0.05),
+                            child: const Column(
+                              children: [
+                                ListTile(
+                                  leading: Icon(
+                                    Icons.medical_information_outlined,
+                                    color: Colors.white70,
+                                  ),
+                                  title: Text(
+                                    "Medical Records",
+                                    style: TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    "Sakit sa nawng",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                                ListTile(
+                                  leading: Icon(
+                                    Icons.fastfood_outlined,
+                                    color: Colors.white70,
+                                  ),
+                                  title: Text(
+                                    "Prescriptions",
+                                    style: TextStyle(color: Colors.white70),
+                                  ),
+                                  subtitle: Text(
+                                    "Image dapat ni",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                        onExpansionChanged: (bool expanding) {
+                          setState(() {
+                            _isHealthProfileExpanded = expanding;
+                          });
+                        },
+                        initiallyExpanded: _isHealthProfileExpanded,
                       ),
                     ],
                   ),

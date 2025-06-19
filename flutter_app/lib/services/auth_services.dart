@@ -11,8 +11,8 @@ class AuthService {
   // For iOS emulator, you can use 'localhost' or '127.0.0.1'.
   // For a physical device, use your computer's network IP address.
 
-  final String _baseUrl = isProd ? baseUrl : "http://10.0.2.2:8000";
-  //final String _baseUrl = baseUrl;
+  //final String _baseUrl = isProd ? baseUrl : "http://10.0.2.2:8000";
+  final String _baseUrl = baseUrl;
 
   final _storage = const FlutterSecureStorage();
 
@@ -85,11 +85,7 @@ class AuthService {
     request.fields['password'] = password;
 
     request.files.add(
-      await http.MultipartFile.fromPath(
-        'file', 
-        filePath,
-        filename: fileName,
-        ),
+      await http.MultipartFile.fromPath('file', filePath, filename: fileName),
     );
 
     var streamedResponse = await request.send();
@@ -98,8 +94,7 @@ class AuthService {
 
     if (res.statusCode == 200) {
       return resbody['message'];
-    }
-    else {
+    } else {
       throw Exception(resbody['detail'] ?? 'Failed to register as doctor.');
     }
   }
