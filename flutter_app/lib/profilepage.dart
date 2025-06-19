@@ -1,11 +1,9 @@
-// File: lib/profilepage.dart
 import 'package:bsdoc_flutter/components/bottomnavbar.dart';
 import 'package:bsdoc_flutter/components/appbar.dart';
 import 'package:bsdoc_flutter/providers/AuthProvider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:bsdoc_flutter/providers/AuthProvider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -193,7 +191,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     title: "Medical History",
                     children: [
                       ExpansionTile(
-                        key: const PageStorageKey('personal_info'),
+                        key: const PageStorageKey('medical_record'),
                         title: Row(
                           children: const [
                             Icon(
@@ -300,28 +298,27 @@ class _ProfilePageState extends State<ProfilePage> {
                         ],
                         onExpansionChanged: (bool expanding) {
                           setState(() {
-                            _isHealthProfileExpanded = expanding;
+                            // This state change can be handled as needed
                           });
                         },
-                        initiallyExpanded: _isHealthProfileExpanded,
                       ),
                     ],
                   ),
                   _buildSectionCard(
-                    title: "Medical History",
+                    title: "BSDOC Records",
                     children: [
                       ExpansionTile(
-                        key: const PageStorageKey('personal_info'),
+                        key: const PageStorageKey('bsdoc_records'),
                         title: Row(
                           children: const [
                             Icon(
-                              Icons.person_outline,
+                              Icons.folder_copy_outlined,
                               color: Colors.white,
                               size: 25,
                             ),
                             SizedBox(width: 16),
                             Text(
-                              "BSDOC Records",
+                              "View Records",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
@@ -335,7 +332,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           vertical: 0.0,
                           horizontal: 16.0,
                         ),
-                        // This is the content that shows when expanded
                         children: <Widget>[
                           Container(
                             color: Colors.white.withOpacity(0.05),
@@ -343,7 +339,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               children: [
                                 ListTile(
                                   leading: Icon(
-                                    Icons.medical_information_outlined,
+                                    Icons.receipt_long_outlined,
                                     color: Colors.white70,
                                   ),
                                   title: Text(
@@ -363,7 +359,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 ListTile(
                                   leading: Icon(
-                                    Icons.fastfood_outlined,
+                                    Icons.description_outlined,
                                     color: Colors.white70,
                                   ),
                                   title: Text(
@@ -384,10 +380,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         ],
                         onExpansionChanged: (bool expanding) {
                           setState(() {
-                            _isHealthProfileExpanded = expanding;
+                            // This state change can be handled as needed
                           });
                         },
-                        initiallyExpanded: _isHealthProfileExpanded,
                       ),
                     ],
                   ),
@@ -418,7 +413,11 @@ class _ProfilePageState extends State<ProfilePage> {
       context,
       listen: false,
     ).userLastName;
-    final userFullName = '$userFirstName $userLastName';
+
+    final userFullName = ('${userFirstName ?? ''} ${userLastName ?? ''}')
+        .trim();
+    final displayName = userFullName.isNotEmpty ? userFullName : 'Username';
+
     String? imageUrl = user?['profile_image_url'];
     ImageProvider profileImage = (imageUrl != null && imageUrl.isNotEmpty)
         ? NetworkImage(imageUrl)
@@ -435,7 +434,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           const SizedBox(height: 12),
           Text(
-            user?['User'] ?? userFullName,
+            user?['User'] ?? displayName,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 26,
